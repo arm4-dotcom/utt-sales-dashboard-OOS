@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>UTT Sales Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d45;
+    --accent: #00d4aa;
+    --accent2: #ff6b6b;
+    --accent3: #ffd166;
+    --text: #e8f0fe;
+    --text2: #8899bb;
+    --stockout: #ff6b6b;
+    --stock: #ffd166;
+    --peak: #f97316;
+    --offpeak: #60a5fa;
+    --weekday: #a78bfa;
+    --weekend: #34d399;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0d1b35 0%, #0a2a4a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 12px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display:flex; align-items:center; justify-content:space-between; }
+  .logo { display:flex; align-items:center; gap:10px; }
+  .logo-dot {
+    width:32px; height:32px; border-radius:8px;
+    background: var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px;
+    color:#0a0f1e;
+  }
+  .logo-text { font-size:17px; font-weight:700; letter-spacing:0.5px; }
+  .logo-sub { font-size:11px; color:var(--text2); font-weight:300; }
+  .refresh-btn {
+    background: var(--surface2); border:1px solid var(--border);
+    color: var(--accent); padding:8px 14px; border-radius:8px;
+    font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer;
+    transition: all 0.2s;
+  }
+  .refresh-btn:hover { background: var(--accent); color:#0a0f1e; }
+  .last-update { font-size:11px; color:var(--text2); margin-top:6px; }
+
+  /* Filter Panel */
+  .filter-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+  }
+  .filter-title {
+    font-size:11px; color:var(--text2); text-transform:uppercase;
+    letter-spacing:1.5px; margin-bottom:10px; font-weight:600;
+  }
+  .filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .filter-group { display:flex; flex-direction:column; gap:4px; }
+  .filter-group.full { grid-column: span 2; }
+  .filter-label { font-size:11px; color:var(--text2); }
+  .filter-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-family:'Sarabun',sans-serif;
+    font-size:13px;
+    width:100%;
+    appearance: none;
+    cursor: pointer;
+  }
+  .filter-select:focus { outline:none; border-color:var(--accent); }
+  .date-row { display:flex; gap:8px; align-items:center; }
+  .date-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-family:'Sarabun',sans-serif;
+    font-size:13px;
+    flex:1;
+  }
+  .date-input:focus { outline:none; border-color:var(--accent); }
+  .date-sep { color:var(--text2); font-size:13px; }
+  .apply-btn {
+    background: var(--accent);
+    color: #0a0f1e;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-family:'Sarabun',sans-serif;
+    font-weight:700; font-size:13px;
+    cursor:pointer; margin-top:10px; width:100%;
+    transition: opacity 0.2s;
+  }
+  .apply-btn:hover { opacity:0.85; }
+
+  /* Filter tag chips */
+  .filter-tags {
+    display:flex; flex-wrap:wrap; gap:6px;
+    padding: 10px 20px 0;
+  }
+  .filter-tag {
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.3);
+    color: var(--accent);
+    padding: 3px 10px; border-radius:20px;
+    font-size:11px; font-family:'IBM Plex Mono',monospace;
+    cursor:pointer;
+  }
+  .filter-tag:hover { background:rgba(0,212,170,0.2); }
+
+  /* KPI Cards */
+  .kpi-section { padding: 16px 20px 0; }
+  .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    position:relative; overflow:hidden;
+  }
+  .kpi-card::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:3px;
+  }
+  .kpi-card.total::before { background:var(--accent); }
+  .kpi-card.stockout-card::before { background:var(--stockout); }
+  .kpi-card.stock-card::before { background:var(--stock); }
+  .kpi-card.stores-card::before { background:#a78bfa; }
+  .kpi-label { font-size:11px; color:var(--text2); margin-bottom:6px; }
+  .kpi-value {
+    font-family:'IBM Plex Mono',monospace;
+    font-size:26px; font-weight:600;
+    line-height:1;
+  }
+  .kpi-card.total .kpi-value { color:var(--accent); }
+  .kpi-card.stockout-card .kpi-value { color:var(--stockout); }
+  .kpi-card.stock-card .kpi-value { color:var(--stock); }
+  .kpi-card.stores-card .kpi-value { color:#a78bfa; }
+  .kpi-sub { font-size:11px; color:var(--text2); margin-top:4px; }
+
+  /* Section */
+  .section { padding: 16px 20px 0; }
+  .section-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:12px;
+  }
+  .section-title { font-size:14px; font-weight:600; }
+  .badge {
+    font-size:11px; padding:3px 8px; border-radius:20px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .badge-stockout { background:rgba(255,107,107,0.15); color:var(--stockout); }
+  .badge-stock { background:rgba(255,209,102,0.15); color:var(--stock); }
+
+  /* Chart Bar */
+  .chart-item { margin-bottom:10px; }
+  .chart-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+  .chart-label { font-size:12px; color:var(--text); min-width:80px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .chart-bar-wrap { flex:1; background:var(--surface2); border-radius:4px; height:18px; overflow:hidden; }
+  .chart-bar {
+    height:100%; border-radius:4px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    display:flex; align-items:center; padding-left:6px;
+  }
+  .chart-bar.stockout-bar { background: linear-gradient(90deg,#ff6b6b,#ff4040); }
+  .chart-bar.stock-bar { background: linear-gradient(90deg,#ffd166,#ffb703); }
+  .chart-bar.peak-bar { background: linear-gradient(90deg,#f97316,#ea580c); }
+  .chart-bar.offpeak-bar { background: linear-gradient(90deg,#60a5fa,#3b82f6); }
+  .chart-bar.weekday-bar { background: linear-gradient(90deg,#a78bfa,#7c3aed); }
+  .chart-bar.weekend-bar { background: linear-gradient(90deg,#34d399,#10b981); }
+  .chart-count {
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; color:var(--text2); min-width:30px; text-align:right;
+  }
+
+  /* Peak/OffPeak specific chart */
+  .seg-chart { display:flex; flex-direction:column; gap:12px; }
+  .seg-row { display:flex; flex-direction:column; gap:4px; }
+  .seg-label-row { display:flex; justify-content:space-between; align-items:center; }
+  .seg-name { font-size:13px; font-weight:600; }
+  .seg-name.peak { color:var(--peak); }
+  .seg-name.offpeak { color:var(--offpeak); }
+  .seg-name.weekday { color:var(--weekday); }
+  .seg-name.weekend { color:var(--weekend); }
+  .seg-count { font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text2); }
+  .seg-bar-wrap { background:var(--surface2); border-radius:6px; height:22px; overflow:hidden; }
+  .seg-bar { height:100%; border-radius:6px; transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
+  .seg-bar.peak { background: linear-gradient(90deg,#f97316,#ea580c); }
+  .seg-bar.offpeak { background: linear-gradient(90deg,#60a5fa,#3b82f6); }
+  .seg-bar.weekday { background: linear-gradient(90deg,#a78bfa,#7c3aed); }
+  .seg-bar.weekend { background: linear-gradient(90deg,#34d399,#10b981); }
+  .seg-sub { font-size:11px; color:var(--text2); display:flex; gap:10px; margin-top:2px; }
+
+  /* Double KPI for segments */
+  .seg-kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .seg-kpi {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:10px; padding:10px 12px;
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .seg-kpi-label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:1px; }
+  .seg-kpi-val { font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; }
+  .seg-kpi-val.peak { color:var(--peak); }
+  .seg-kpi-val.offpeak { color:var(--offpeak); }
+  .seg-kpi-val.weekday { color:var(--weekday); }
+  .seg-kpi-val.weekend { color:var(--weekend); }
+
+  /* Table */
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  thead tr { background:var(--surface2); }
+  th {
+    padding:8px 10px; text-align:left;
+    color:var(--text2); font-weight:600;
+    font-size:11px; letter-spacing:0.5px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  td {
+    padding:8px 10px;
+    border-bottom:1px solid var(--border);
+    color:var(--text);
+  }
+  tr:hover td { background:var(--surface2); }
+  .type-badge {
+    display:inline-block; padding:2px 8px; border-radius:20px;
+    font-size:11px; font-weight:600;
+  }
+  .type-stockout { background:rgba(255,107,107,0.15); color:var(--stockout); }
+  .type-stock { background:rgba(255,209,102,0.15); color:var(--stock); }
+  .seg-badge {
+    display:inline-block; padding:2px 7px; border-radius:20px;
+    font-size:10px; font-weight:600;
+  }
+  .seg-peak { background:rgba(249,115,22,0.15); color:var(--peak); }
+  .seg-offpeak { background:rgba(96,165,250,0.15); color:var(--offpeak); }
+  .seg-weekday { background:rgba(167,139,250,0.15); color:var(--weekday); }
+  .seg-weekend { background:rgba(52,211,153,0.15); color:var(--weekend); }
+
+  /* Loading */
+  .loading {
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:60px 20px; gap:16px;
+  }
+  .spinner {
+    width:40px; height:40px; border-radius:50%;
+    border:3px solid var(--border);
+    border-top-color:var(--accent);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loading-text { font-size:14px; color:var(--text2); }
+
+  /* Empty */
+  .empty {
+    text-align:center; padding:40px 20px;
+    color:var(--text2); font-size:14px;
+  }
+
+  .card-block {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px; padding:14px;
+    margin-bottom:12px;
+  }
+
+  /* Divider */
+  .seg-divider {
+    border:none; border-top:1px solid var(--border);
+    margin:12px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-dot">UTT</div>
+      <div>
+        <div class="logo-text">Sales Dashboard</div>
+        <div class="logo-sub">Stock & OOS Report</div>
+      </div>
+    </div>
+    <button class="refresh-btn" onclick="loadData()">↻ รีเฟรช</button>
+  </div>
+  <div class="last-update" id="lastUpdate">กำลังโหลดข้อมูล...</div>
+</div>
+
+<div class="filter-panel">
+  <div class="filter-title">🔍 Filter</div>
+  <div class="filter-grid">
+    <div class="filter-group">
+      <div class="filter-label">Channel</div>
+      <select class="filter-select" id="fChannel"><option value="">ทั้งหมด</option></select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Region</div>
+      <select class="filter-select" id="fRegion"><option value="">ทั้งหมด</option></select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Area</div>
+      <select class="filter-select" id="fArea"><option value="">ทั้งหมด</option></select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">BU</div>
+      <select class="filter-select" id="fBU"><option value="">ทั้งหมด</option></select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Brand</div>
+      <select class="filter-select" id="fBrand"><option value="">ทั้งหมด</option></select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Category</div>
+      <select class="filter-select" id="fCategory"><option value="">ทั้งหมด</option></select>
+    </div>
+    <!-- NEW FILTERS -->
+    <div class="filter-group">
+      <div class="filter-label">Week Segment</div>
+      <select class="filter-select" id="fWeekSegment"><option value="">ทั้งหมด</option></select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Time Segment</div>
+      <select class="filter-select" id="fTimeSegment"><option value="">ทั้งหมด</option></select>
+    </div>
+    <!-- END NEW FILTERS -->
+    <div class="filter-group full">
+      <div class="filter-label">ช่วงวันที่</div>
+      <div class="date-row">
+        <input type="date" class="date-input" id="fDateFrom">
+        <span class="date-sep">—</span>
+        <input type="date" class="date-input" id="fDateTo">
+      </div>
+    </div>
+  </div>
+  <button class="apply-btn" onclick="applyFilter()">ดูข้อมูล</button>
+</div>
+
+<div id="mainContent">
+  <div class="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">กำลังโหลดข้อมูล...</div>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = '17kdTngl7ozh1o-TNLfnSOKVFDWzDweYl2zBU6c3Sw50';
+const SHEET_NAME = 'stockout_reports';
+const API_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+let allData = [];
+let filtered = [];
+
+async function loadData() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>`;
+  try {
+    const res = await fetch(API_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const cols = json.table.cols.map(c => c.label);
+    allData = json.table.rows.map(r => {
+      const obj = {};
+      cols.forEach((c,i) => { obj[c] = r.c[i]?.v ?? ''; });
+      return obj;
+    });
+    populateFilters();
+    applyFilter();
+    document.getElementById('lastUpdate').textContent = 'อัปเดตล่าสุด: ' + new Date().toLocaleString('th-TH');
+  } catch(e) {
+    document.getElementById('mainContent').innerHTML = `<div class="empty">❌ โหลดข้อมูลไม่สำเร็จ<br><small>${e.message}</small></div>`;
+  }
+}
+
+function populateFilters() {
+  const fields = {
+    fChannel:'Channel', fRegion:'Region', fArea:'Area',
+    fBU:'BU', fBrand:'Brand', fCategory:'Category',
+    fWeekSegment:'Week_segment', fTimeSegment:'Time_Segment'
+  };
+  Object.entries(fields).forEach(([id,col]) => {
+    const sel = document.getElementById(id);
+    const vals = [...new Set(allData.map(r=>r[col]).filter(Boolean))].sort();
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">ทั้งหมด</option>' + vals.map(v=>`<option value="${v}">${v}</option>`).join('');
+    if(cur) sel.value = cur;
+  });
+}
+
+function applyFilter() {
+  const ch = document.getElementById('fChannel').value;
+  const re = document.getElementById('fRegion').value;
+  const ar = document.getElementById('fArea').value;
+  const bu = document.getElementById('fBU').value;
+  const br = document.getElementById('fBrand').value;
+  const ca = document.getElementById('fCategory').value;
+  const ws = document.getElementById('fWeekSegment').value;
+  const ts = document.getElementById('fTimeSegment').value;
+  const df = document.getElementById('fDateFrom').value;
+  const dt = document.getElementById('fDateTo').value;
+
+  filtered = allData.filter(r => {
+    if(ch && r.Channel !== ch) return false;
+    if(re && r.Region !== re) return false;
+    if(ar && r.Area !== ar) return false;
+    if(bu && r.BU !== bu) return false;
+    if(br && r.Brand !== br) return false;
+    if(ca && r.Category !== ca) return false;
+    if(ws && r.Week_segment !== ws) return false;
+    if(ts && r.Time_Segment !== ts) return false;
+    if(df || dt) {
+      const stamp = r.timestamp ? r.timestamp.toString().slice(0,10) : '';
+      if(df && stamp < df) return false;
+      if(dt && stamp > dt) return false;
+    }
+    return true;
+  });
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const total = filtered.length;
+  const stockout = filtered.filter(r => (r.Report_Type||'').toLowerCase().includes('stockout')).length;
+  const stock = filtered.filter(r => (r.Report_Type||'').toLowerCase() === 'stock').length;
+  const stores = new Set(filtered.map(r=>r.store_id).filter(Boolean)).size;
+
+  const byChannel = groupBy(filtered, 'Channel');
+  const byBrand = groupBy(filtered, 'Brand');
+  const byRegion = groupBy(filtered, 'Region');
+
+  // Time segment breakdown
+  const timeSeg = calcSegment(filtered, 'Time_Segment');
+  const weekSeg = calcSegment(filtered, 'Week_segment');
+
+  const html = `
+  <div class="kpi-section">
+    <div class="kpi-grid">
+      <div class="kpi-card total">
+        <div class="kpi-label">รายการทั้งหมด</div>
+        <div class="kpi-value">${total.toLocaleString()}</div>
+        <div class="kpi-sub">รายการที่กรอง</div>
+      </div>
+      <div class="kpi-card stores-card">
+        <div class="kpi-label">จำนวนร้าน</div>
+        <div class="kpi-value">${stores.toLocaleString()}</div>
+        <div class="kpi-sub">unique stores</div>
+      </div>
+      <div class="kpi-card stockout-card">
+        <div class="kpi-label">Stockout</div>
+        <div class="kpi-value">${stockout.toLocaleString()}</div>
+        <div class="kpi-sub">${total ? Math.round(stockout/total*100) : 0}% ของทั้งหมด</div>
+      </div>
+      <div class="kpi-card stock-card">
+        <div class="kpi-label">Stock (เหลือน้อย)</div>
+        <div class="kpi-value">${stock.toLocaleString()}</div>
+        <div class="kpi-sub">${total ? Math.round(stock/total*100) : 0}% ของทั้งหมด</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW: Time Segment Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">⏱️ Peak vs OffPeak</div>
+      <span class="badge" style="background:rgba(249,115,22,0.12);color:var(--peak);">${total} รายการ</span>
+    </div>
+    <div class="card-block">
+      <div class="seg-kpi-grid">
+        ${renderSegKPI(timeSeg, ['Peak','OffPeak'], ['peak','offpeak'])}
+      </div>
+      <div class="seg-chart">
+        ${renderSegBars(timeSeg, total, ['Peak','OffPeak'], ['peak','offpeak'])}
+      </div>
+      <hr class="seg-divider">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Weekday vs Weekend</div>
+      <div class="seg-kpi-grid">
+        ${renderSegKPI(weekSeg, ['Weekday','Weekend'], ['weekday','weekend'])}
+      </div>
+      <div class="seg-chart">
+        ${renderSegBars(weekSeg, total, ['Weekday','Weekend'], ['weekday','weekend'])}
+      </div>
+    </div>
+  </div>
+  <!-- END NEW -->
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">📊 แยกตาม Channel</div>
+    </div>
+    <div class="card-block">
+      ${renderBarChart(byChannel, total)}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">🏷️ แยกตาม Brand</div>
+    </div>
+    <div class="card-block">
+      ${renderBarChart(byBrand, total)}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">📍 แยกตาม Region</div>
+    </div>
+    <div class="card-block">
+      ${renderBarChart(byRegion, total)}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">📋 รายการล่าสุด</div>
+      <span class="badge badge-stockout">${Math.min(total,50)} / ${total}</span>
+    </div>
+    <div class="card-block" style="padding:0; overflow:hidden;">
+      ${renderTable(filtered.slice(0,50))}
+    </div>
+  </div>`;
+
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function calcSegment(data, key) {
+  const map = {};
+  data.forEach(r => {
+    const k = r[key] || 'ไม่ระบุ';
+    if(!map[k]) map[k] = { total:0, stockout:0, stock:0 };
+    map[k].total++;
+    const rt = (r.Report_Type||'').toLowerCase();
+    if(rt.includes('stockout')) map[k].stockout++;
+    else if(rt === 'stock') map[k].stock++;
+  });
+  return map;
+}
+
+function renderSegKPI(map, labels, classes) {
+  return labels.map((label, i) => {
+    const d = map[label] || {total:0, stockout:0, stock:0};
+    return `<div class="seg-kpi">
+      <div class="seg-kpi-label">${label}</div>
+      <div class="seg-kpi-val ${classes[i]}">${d.total.toLocaleString()}</div>
+      <div style="font-size:10px;color:var(--text2);margin-top:2px;">
+        <span style="color:var(--stockout);">OOS: ${d.stockout}</span> &nbsp;
+        <span style="color:var(--stock);">Stock: ${d.stock}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSegBars(map, totalAll, labels, classes) {
+  const max = Math.max(...labels.map(l => (map[l]||{total:0}).total), 1);
+  return labels.map((label, i) => {
+    const d = map[label] || {total:0, stockout:0, stock:0};
+    const pct = Math.round(d.total / max * 100);
+    const totalPct = totalAll ? Math.round(d.total / totalAll * 100) : 0;
+    return `<div class="seg-row">
+      <div class="seg-label-row">
+        <span class="seg-name ${classes[i]}">${label}</span>
+        <span class="seg-count">${d.total.toLocaleString()} (${totalPct}%)</span>
+      </div>
+      <div class="seg-bar-wrap">
+        <div class="seg-bar ${classes[i]}" style="width:${pct}%"></div>
+      </div>
+      <div class="seg-sub">
+        <span style="color:var(--stockout);">● stockout: ${d.stockout}</span>
+        <span style="color:var(--stock);">● stock: ${d.stock}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function groupBy(data, key) {
+  const map = {};
+  data.forEach(r => {
+    const k = r[key] || 'ไม่ระบุ';
+    if(!map[k]) map[k] = {total:0, stockout:0, stock:0};
+    map[k].total++;
+    const rt = (r.Report_Type||'').toLowerCase();
+    if(rt.includes('stockout')) map[k].stockout++;
+    else if(rt === 'stock') map[k].stock++;
+  });
+  return Object.entries(map).sort((a,b)=>b[1].total-a[1].total).slice(0,8);
+}
+
+function renderBarChart(entries, totalAll) {
+  if(!entries.length) return '<div class="empty">ไม่มีข้อมูล</div>';
+  const max = Math.max(...entries.map(e=>e[1].total));
+  return entries.map(([label, d]) => {
+    const pct = max ? Math.round(d.total/max*100) : 0;
+    return `
+    <div class="chart-item">
+      <div class="chart-row">
+        <div class="chart-label" title="${label}">${label}</div>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar stockout-bar" style="width:${pct}%"></div>
+        </div>
+        <div class="chart-count">${d.total}</div>
+      </div>
+      <div style="display:flex;gap:12px;padding-left:88px;margin-bottom:4px;">
+        <span style="font-size:11px;color:var(--stockout);">stockout: ${d.stockout}</span>
+        <span style="font-size:11px;color:var(--stock);">stock: ${d.stock}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable(rows) {
+  if(!rows.length) return '<div class="empty">ไม่มีข้อมูล</div>';
+  const headers = ['timestamp','store_name','Channel','Brand','product_en','Report_Type','OH','Time_Segment','Week_segment'];
+  return `<div class="table-wrap"><table>
+    <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>{
+      const rt = (r.Report_Type||'').toLowerCase();
+      const ts = (r.Time_Segment||'').toLowerCase();
+      const ws = (r.Week_segment||'').toLowerCase();
+      const tsBadge = ts === 'peak' ? 'seg-peak' : ts === 'offpeak' ? 'seg-offpeak' : '';
+      const wsBadge = ws === 'weekday' ? 'seg-weekday' : ws === 'weekend' ? 'seg-weekend' : '';
+      return `<tr>
+        <td style="white-space:nowrap;font-size:11px;">${(r.timestamp||'').toString().slice(0,16)}</td>
+        <td>${r.store_name||''}</td>
+        <td>${r.Channel||''}</td>
+        <td>${r.Brand||''}</td>
+        <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.product_en||''}</td>
+        <td><span class="type-badge ${rt.includes('stockout')?'type-stockout':'type-stock'}">${r.Report_Type||''}</span></td>
+        <td style="font-family:'IBM Plex Mono',monospace;">${r.OH||''}</td>
+        <td>${r.Time_Segment ? `<span class="seg-badge ${tsBadge}">${r.Time_Segment}</span>` : ''}</td>
+        <td>${r.Week_segment ? `<span class="seg-badge ${wsBadge}">${r.Week_segment}</span>` : ''}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+}
+
+// Init default date range (current month)
+const now = new Date();
+const y = now.getFullYear(), m = String(now.getMonth()+1).padStart(2,'0');
+document.getElementById('fDateFrom').value = `${y}-${m}-01`;
+document.getElementById('fDateTo').value = now.toISOString().slice(0,10);
+
+loadData();
+</script>
+</body>
+</html>
