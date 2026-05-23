@@ -9,7 +9,6 @@
   :root {
     --bg:#0a0f1e; --surface:#111827; --surface2:#1a2236; --border:#1e2d45;
     --accent:#00d4aa; --stockout:#ff6b6b; --stock:#ffd166;
-    --peak:#f97316; --offpeak:#60a5fa; --weekday:#a78bfa; --weekend:#34d399;
     --text:#e8f0fe; --text2:#8899bb;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -27,12 +26,14 @@
   .refresh-btn:hover{background:var(--accent);color:#0a0f1e;}
   .export-btn{background:#1d6f42;border:1px solid #2a9d5c;color:#fff;padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
   .export-btn:hover{background:#2a9d5c;}
+  .export-btn:disabled{opacity:0.5;cursor:not-allowed;}
   .last-update{font-size:11px;color:var(--text2);margin-top:6px;display:none;}
   .mode-badge{display:none;align-items:center;gap:8px;margin-top:8px;}
   .mode-chip{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
   .mode-chip.oos{background:rgba(255,107,107,0.15);color:var(--stockout);}
   .mode-chip.stock{background:rgba(255,209,102,0.15);color:var(--stock);}
 
+  /* HOME */
   #homePage{padding:30px 20px;}
   .home-greeting{text-align:center;margin-bottom:32px;}
   .home-greeting h1{font-size:22px;font-weight:700;margin-bottom:6px;}
@@ -53,6 +54,7 @@
   .home-card-desc{font-size:13px;color:var(--text2);line-height:1.5;}
   .home-card-arrow{font-size:22px;color:var(--text2);}
 
+  /* FILTER */
   #filterPanel{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:none;}
   .filter-title{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-weight:600;}
   .filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -65,82 +67,50 @@
   .date-input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-family:'Sarabun',sans-serif;font-size:13px;flex:1;}
   .date-input:focus{outline:none;border-color:var(--accent);}
   .date-sep{color:var(--text2);font-size:13px;}
-  .apply-btn{background:var(--accent);color:#0a0f1e;border:none;padding:8px 18px;border-radius:6px;font-family:'Sarabun',sans-serif;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;width:100%;transition:opacity 0.2s;}
-  .apply-btn:hover{opacity:0.85;}
+  .apply-btn{background:var(--accent);color:#0a0f1e;border:none;padding:8px 18px;border-radius:6px;font-family:'Sarabun',sans-serif;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;width:100%;}
 
+  /* DASH */
   #dashPage{display:none;padding-bottom:40px;}
-  .kpi-section{padding:16px 20px 0;}
-  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative;overflow:hidden;}
-  .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-  .kpi-card.total::before{background:var(--accent);}
-  .kpi-card.oos-card::before{background:var(--stockout);}
-  .kpi-card.stock-card::before{background:var(--stock);}
-  .kpi-card.stores-card::before{background:#a78bfa;}
-  .kpi-label{font-size:11px;color:var(--text2);margin-bottom:6px;}
-  .kpi-value{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;line-height:1;}
-  .kpi-card.total .kpi-value{color:var(--accent);}
-  .kpi-card.oos-card .kpi-value{color:var(--stockout);}
-  .kpi-card.stock-card .kpi-value{color:var(--stock);}
-  .kpi-card.stores-card .kpi-value{color:#a78bfa;}
-  .kpi-sub{font-size:11px;color:var(--text2);margin-top:4px;}
 
-  .section{padding:16px 20px 0;}
-  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-  .section-title{font-size:14px;font-weight:600;}
+  /* KPI strip */
+  .kpi-strip{display:flex;gap:8px;padding:14px 20px;overflow-x:auto;}
+  .kpi-pill{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;white-space:nowrap;flex-shrink:0;}
+  .kpi-pill-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
+  .kpi-pill-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;}
+  .kpi-pill-val.green{color:var(--accent);}
+  .kpi-pill-val.red{color:var(--stockout);}
+  .kpi-pill-val.yellow{color:var(--stock);}
+  .kpi-pill-val.purple{color:#a78bfa;}
+
+  /* Export banner */
+  .export-banner{margin:0 20px 12px;padding:12px 16px;background:#1d6f42;border:1px solid #2a9d5c;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .export-banner-text{font-size:13px;color:#fff;}
+  .export-banner-btn{background:#fff;color:#1d6f42;border:none;padding:7px 16px;border-radius:7px;font-family:'Sarabun',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;}
+
+  /* Table */
+  .table-section{padding:0 20px;}
+  .table-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .table-title{font-size:14px;font-weight:600;}
   .badge{font-size:11px;padding:3px 8px;border-radius:20px;font-family:'IBM Plex Mono',monospace;}
   .badge-red{background:rgba(255,107,107,0.15);color:var(--stockout);}
   .badge-yellow{background:rgba(255,209,102,0.15);color:var(--stock);}
-  .card-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
-
-  .chart-item{margin-bottom:10px;}
-  .chart-row{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
-  .chart-label{font-size:12px;color:var(--text);min-width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .chart-bar-wrap{flex:1;background:var(--surface2);border-radius:4px;height:18px;overflow:hidden;}
-  .chart-bar{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
-  .chart-bar.red-bar{background:linear-gradient(90deg,#ff6b6b,#ff4040);}
-  .chart-bar.yellow-bar{background:linear-gradient(90deg,#ffd166,#ffb703);}
-  .chart-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);min-width:30px;text-align:right;}
-
-  .seg-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-  .seg-kpi{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
-  .seg-kpi-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
-  .seg-kpi-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;}
-  .seg-kpi-val.peak{color:var(--peak);} .seg-kpi-val.offpeak{color:var(--offpeak);}
-  .seg-kpi-val.weekday{color:var(--weekday);} .seg-kpi-val.weekend{color:var(--weekend);}
-  .seg-chart{display:flex;flex-direction:column;gap:12px;}
-  .seg-row{display:flex;flex-direction:column;gap:4px;}
-  .seg-label-row{display:flex;justify-content:space-between;align-items:center;}
-  .seg-name{font-size:13px;font-weight:600;}
-  .seg-name.peak{color:var(--peak);} .seg-name.offpeak{color:var(--offpeak);}
-  .seg-name.weekday{color:var(--weekday);} .seg-name.weekend{color:var(--weekend);}
-  .seg-count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text2);}
-  .seg-bar-wrap{background:var(--surface2);border-radius:6px;height:22px;overflow:hidden;}
-  .seg-bar{height:100%;border-radius:6px;transition:width 0.7s cubic-bezier(0.4,0,0.2,1);}
-  .seg-bar.peak{background:linear-gradient(90deg,#f97316,#ea580c);}
-  .seg-bar.offpeak{background:linear-gradient(90deg,#60a5fa,#3b82f6);}
-  .seg-bar.weekday{background:linear-gradient(90deg,#a78bfa,#7c3aed);}
-  .seg-bar.weekend{background:linear-gradient(90deg,#34d399,#10b981);}
-  .seg-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
-
-  .export-section{padding:12px 20px 0;}
-  .export-full-btn{width:100%;padding:12px;background:#1d6f42;border:1px solid #2a9d5c;color:#fff;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-  .export-full-btn:hover{background:#2a9d5c;}
-
-  .table-wrap{overflow-x:auto;}
+  .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
   table{width:100%;border-collapse:collapse;font-size:12px;}
   thead tr{background:var(--surface2);}
-  th{padding:8px 10px;text-align:left;color:var(--text2);font-weight:600;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--border);white-space:nowrap;}
-  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);}
+  th{padding:9px 12px;text-align:left;color:var(--text2);font-weight:600;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
   tr:hover td{background:var(--surface2);}
   .type-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
   .type-oos{background:rgba(255,107,107,0.15);color:var(--stockout);}
   .type-stock{background:rgba(255,209,102,0.15);color:var(--stock);}
   .seg-badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;}
-  .seg-peak{background:rgba(249,115,22,0.15);color:var(--peak);}
-  .seg-offpeak{background:rgba(96,165,250,0.15);color:var(--offpeak);}
-  .seg-weekday{background:rgba(167,139,250,0.15);color:var(--weekday);}
-  .seg-weekend{background:rgba(52,211,153,0.15);color:var(--weekend);}
+  .seg-peak{background:rgba(249,115,22,0.15);color:#f97316;}
+  .seg-offpeak{background:rgba(96,165,250,0.15);color:#60a5fa;}
+  .seg-weekday{background:rgba(167,139,250,0.15);color:#a78bfa;}
+  .seg-weekend{background:rgba(52,211,153,0.15);color:#34d399;}
+  .barcode-text{font-family:'IBM Plex Mono',monospace;font-size:11px;white-space:nowrap;}
+  .product-text{min-width:160px;line-height:1.4;}
 
   .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;}
   .spinner{width:40px;height:40px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
@@ -175,6 +145,7 @@
   <div class="last-update" id="lastUpdate"></div>
 </div>
 
+<!-- HOME -->
 <div id="homePage">
   <div class="home-greeting">
     <h1>สวัสดีครับ 👋</h1>
@@ -200,10 +171,12 @@
   </div>
 </div>
 
+<!-- FILTER -->
 <div id="filterPanel">
   <div class="filter-title">🔍 Filter</div>
   <div class="filter-grid">
     <div class="filter-group"><div class="filter-label">Channel</div><select class="filter-select" id="fChannel"><option value="">ทั้งหมด</option></select></div>
+    <div class="filter-group"><div class="filter-label">Customer</div><select class="filter-select" id="fCustomer"><option value="">ทั้งหมด</option></select></div>
     <div class="filter-group"><div class="filter-label">Region</div><select class="filter-select" id="fRegion"><option value="">ทั้งหมด</option></select></div>
     <div class="filter-group"><div class="filter-label">Area</div><select class="filter-select" id="fArea"><option value="">ทั้งหมด</option></select></div>
     <div class="filter-group"><div class="filter-label">BU</div><select class="filter-select" id="fBU"><option value="">ทั้งหมด</option></select></div>
@@ -223,51 +196,41 @@
   <button class="apply-btn" onclick="applyFilter()">ดูข้อมูล</button>
 </div>
 
+<!-- DASH -->
 <div id="dashPage">
   <div id="mainContent">
     <div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-const SHEET_ID  = '17kdTngl7ozh1o-TNLfnSOKVFDWzDweYl2zBU6c3Sw50';
+const SHEET_ID   = '17kdTngl7ozh1o-TNLfnSOKVFDWzDweYl2zBU6c3Sw50';
 const SHEET_NAME = 'stockout_reports';
-const API_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+const API_URL    = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
 let allData     = [];
 let filtered    = [];
 let currentMode = '';
 let dataLoaded  = false;
-let xlsxReady   = false;
-
-// โหลด SheetJS ล่วงหน้า
-(function loadXLSX() {
-  const s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-  s.onload = () => { xlsxReady = true; };
-  document.head.appendChild(s);
-})();
 
 function parseGoogleDate(val) {
   if (!val) return '';
   const s = val.toString();
   const m = s.match(/Date\((\d+),(\d+),(\d+)/);
   if (m) {
-    const y  = m[1];
-    const mo = String(parseInt(m[2]) + 1).padStart(2, '0');
-    const d  = String(m[3]).padStart(2, '0');
-    return `${y}-${mo}-${d}`;
+    return `${m[1]}-${String(parseInt(m[2])+1).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
   }
-  return s.slice(0, 10);
+  return s.slice(0,10);
 }
 
 function todayThai() {
   const now  = new Date();
-  const thai = new Date(now.getTime() + (7 * 60 - now.getTimezoneOffset()) * 60000);
+  const thai = new Date(now.getTime() + (7*60 - now.getTimezoneOffset())*60000);
   const y    = thai.getFullYear();
-  const mo   = String(thai.getMonth() + 1).padStart(2, '0');
-  const d    = String(thai.getDate()).padStart(2, '0');
-  return { y, mo, d, str: `${y}-${mo}-${d}` };
+  const mo   = String(thai.getMonth()+1).padStart(2,'0');
+  const d    = String(thai.getDate()).padStart(2,'0');
+  return { y, mo, d, str:`${y}-${mo}-${d}` };
 }
 
 function initDateRange() {
@@ -277,13 +240,14 @@ function initDateRange() {
 }
 
 function showDashUI(show) {
+  const s = show ? 'block' : 'none';
   ['backBtn','refreshBtn','exportBtn','lastUpdate'].forEach(id => {
-    document.getElementById(id).style.display = show ? (id === 'lastUpdate' ? 'block' : 'block') : 'none';
+    document.getElementById(id).style.display = s;
   });
-  document.getElementById('modeBadge').style.display  = show ? 'flex'  : 'none';
-  document.getElementById('filterPanel').style.display = show ? 'block' : 'none';
-  document.getElementById('dashPage').style.display    = show ? 'block' : 'none';
-  document.getElementById('homePage').style.display    = show ? 'none'  : 'block';
+  document.getElementById('modeBadge').style.display   = show ? 'flex'  : 'none';
+  document.getElementById('filterPanel').style.display  = s;
+  document.getElementById('dashPage').style.display     = s;
+  document.getElementById('homePage').style.display     = show ? 'none' : 'block';
 }
 
 function enterMode(mode) {
@@ -291,12 +255,12 @@ function enterMode(mode) {
   showDashUI(true);
   const chip = document.getElementById('modeChip');
   if (mode === 'oos') {
-    chip.textContent  = '🚫 Out of Stock';
-    chip.className    = 'mode-chip oos';
+    chip.textContent = '🚫 Out of Stock';
+    chip.className   = 'mode-chip oos';
     document.getElementById('logoSub').textContent = 'Out of Stock Report';
   } else {
-    chip.textContent  = '📦 Stock OH';
-    chip.className    = 'mode-chip stock';
+    chip.textContent = '📦 Stock OH';
+    chip.className   = 'mode-chip stock';
     document.getElementById('logoSub').textContent = 'Stock OH Report';
   }
   if (!dataLoaded) { loadData(); } else { applyFilter(); }
@@ -308,19 +272,15 @@ function goHome() {
   currentMode = '';
 }
 
-function reloadData() {
-  dataLoaded = false;
-  loadData();
-}
+function reloadData() { dataLoaded = false; loadData(); }
 
 async function loadData() {
   document.getElementById('mainContent').innerHTML =
     `<div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>`;
-  const url = API_URL + '&_=' + Date.now();
   try {
     const ctrl = new AbortController();
-    const t    = setTimeout(() => ctrl.abort(), 15000);
-    const res  = await fetch(url, { signal: ctrl.signal });
+    const t = setTimeout(() => ctrl.abort(), 15000);
+    const res = await fetch(API_URL + '&_=' + Date.now(), { signal: ctrl.signal });
     clearTimeout(t);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text  = await res.text();
@@ -330,7 +290,7 @@ async function loadData() {
     const cols = json.table.cols.map(c => c.label.trim());
     allData = json.table.rows.filter(r => r && r.c).map(r => {
       const obj = {};
-      cols.forEach((c, i) => { obj[c] = r.c[i]?.v ?? ''; });
+      cols.forEach((c,i) => { obj[c] = r.c[i]?.v ?? ''; });
       obj._dateStr = parseGoogleDate(obj.timestamp);
       return obj;
     });
@@ -351,8 +311,8 @@ async function loadData() {
 
 function populateFilters() {
   const fields = {
-    fChannel:'Channel', fRegion:'Region', fArea:'Area', fBU:'BU',
-    fBrand:'Brand', fCategory:'Category',
+    fChannel:'Channel', fCustomer:'Customer', fRegion:'Region', fArea:'Area',
+    fBU:'BU', fBrand:'Brand', fCategory:'Category',
     fWeekSegment:'Week_segment', fTimeSegment:'Time_Segment'
   };
   Object.entries(fields).forEach(([id, col]) => {
@@ -367,6 +327,7 @@ function populateFilters() {
 
 function applyFilter() {
   const ch = document.getElementById('fChannel').value;
+  const cu = document.getElementById('fCustomer').value;
   const re = document.getElementById('fRegion').value;
   const ar = document.getElementById('fArea').value;
   const bu = document.getElementById('fBU').value;
@@ -378,10 +339,11 @@ function applyFilter() {
   const dt = document.getElementById('fDateTo').value;
 
   filtered = allData.filter(r => {
-    const rt = (r.Report_Type || '').toLowerCase();
+    const rt = (r.Report_Type||'').toLowerCase();
     if (currentMode === 'oos'   && !rt.includes('stockout')) return false;
     if (currentMode === 'stock' && rt !== 'stock')           return false;
     if (ch && r.Channel      !== ch) return false;
+    if (cu && r.Customer     !== cu) return false;
     if (re && r.Region       !== re) return false;
     if (ar && r.Area         !== ar) return false;
     if (bu && r.BU           !== bu) return false;
@@ -396,43 +358,108 @@ function applyFilter() {
   renderDashboard();
 }
 
-// ========== EXPORT EXCEL ==========
+function renderDashboard() {
+  const total  = filtered.length;
+  const stores = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
+  const isOOS  = currentMode === 'oos';
+  const badgeClass = isOOS ? 'badge-red' : 'badge-yellow';
+  const pillVal    = isOOS ? 'red'       : 'yellow';
+  const label      = isOOS ? 'OOS'       : 'Stock OH';
+
+  document.getElementById('mainContent').innerHTML = `
+  <div class="kpi-strip">
+    <div class="kpi-pill">
+      <div class="kpi-pill-label">รายการ</div>
+      <div class="kpi-pill-val green">${total.toLocaleString()}</div>
+    </div>
+    <div class="kpi-pill">
+      <div class="kpi-pill-label">ร้านค้า</div>
+      <div class="kpi-pill-val purple">${stores.toLocaleString()}</div>
+    </div>
+    <div class="kpi-pill">
+      <div class="kpi-pill-label">${label}</div>
+      <div class="kpi-pill-val ${pillVal}">${total.toLocaleString()}</div>
+    </div>
+  </div>
+
+  <div class="export-banner">
+    <div class="export-banner-text">📊 ${total.toLocaleString()} รายการ พร้อม Export</div>
+    <button class="export-banner-btn" onclick="exportExcel()">⬇ Excel</button>
+  </div>
+
+  <div class="table-section">
+    <div class="table-header">
+      <div class="table-title">📋 รายการทั้งหมด</div>
+      <span class="badge ${badgeClass}">${total.toLocaleString()} รายการ</span>
+    </div>
+    <div class="table-wrap">${renderTable(filtered)}</div>
+  </div>`;
+}
+
+function renderTable(rows) {
+  if (!rows.length) return '<div class="empty" style="padding:40px 20px;">ไม่มีข้อมูล</div>';
+  const headers = ['Channel','Customer','Brand','Barcode','ชื่อสินค้า (EN)','ชื่อสินค้า (TH)','ร้านค้า','ประเภท','OH','Time','Week','วันที่'];
+  return `<table>
+    <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r => {
+      const rt  = (r.Report_Type||'').toLowerCase();
+      const ts  = (r.Time_Segment||'').toLowerCase();
+      const ws  = (r.Week_segment||'').toLowerCase();
+      const bar = r.barcode ? String(Math.round(Number(r.barcode))) : '';
+      return `<tr>
+        <td>${r.Channel||''}</td>
+        <td>${r.Customer||''}</td>
+        <td>${r.Brand||''}</td>
+        <td class="barcode-text">${bar}</td>
+        <td class="product-text">${r.product_en||''}</td>
+        <td class="product-text">${r.product_th||''}</td>
+        <td>${r.store_name||''}</td>
+        <td><span class="type-badge ${rt.includes('stockout')?'type-oos':'type-stock'}">${r.Report_Type||''}</span></td>
+        <td style="font-family:'IBM Plex Mono',monospace;text-align:right;">${r.OH!==''?r.OH:''}</td>
+        <td>${r.Time_Segment?`<span class="seg-badge seg-${ts}">${r.Time_Segment}</span>`:''}</td>
+        <td>${r.Week_segment?`<span class="seg-badge seg-${ws}">${r.Week_segment}</span>`:''}</td>
+        <td style="white-space:nowrap;font-size:11px;color:var(--text2);">${r._dateStr}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
 function exportExcel() {
   if (!filtered.length) { alert('ไม่มีข้อมูลที่จะ Export'); return; }
-  if (!xlsxReady) { alert('กรุณารอสักครู่ กำลังโหลด Export library...'); return; }
+  if (typeof XLSX === 'undefined') { alert('กรุณารอสักครู่แล้วลองใหม่'); return; }
 
   const headers = [
-    'วันที่','store_id','store_name','Channel','Region','Area',
-    'BU','Category','Brand','product_th','product_en',
+    'วันที่','Channel','Customer','store_id','store_name','Region','Area',
+    'BU','Category','Brand','Barcode','product_en','product_th',
     'Report_Type','OH','Reason','Time_Segment','Week_segment'
   ];
 
   const rows = filtered.map(r => [
     r._dateStr,
-    r.store_id   ? Number(r.store_id)   : '',
-    r.store_name  || '',
-    r.Channel     || '',
-    r.Region      || '',
-    r.Area        || '',
-    r.BU          || '',
-    r.Category    || '',
-    r.Brand       || '',
-    r.product_th  || '',
-    r.product_en  || '',
-    r.Report_Type || '',
-    r.OH          !== '' ? Number(r.OH) : '',
-    r.Reason      || '',
+    r.Channel      || '',
+    r.Customer     || '',
+    r.store_id     ? Number(r.store_id) : '',
+    r.store_name   || '',
+    r.Region       || '',
+    r.Area         || '',
+    r.BU           || '',
+    r.Category     || '',
+    r.Brand        || '',
+    r.barcode      ? String(Math.round(Number(r.barcode))) : '',
+    r.product_en   || '',
+    r.product_th   || '',
+    r.Report_Type  || '',
+    r.OH !== ''    ? Number(r.OH) : '',
+    r.Reason       || '',
     r.Time_Segment || '',
     r.Week_segment || ''
   ]);
 
   const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-
-  // ความกว้าง column
   ws['!cols'] = [
-    {wch:12},{wch:12},{wch:20},{wch:8},{wch:10},{wch:10},
-    {wch:8},{wch:10},{wch:10},{wch:30},{wch:30},
-    {wch:10},{wch:6},{wch:18},{wch:12},{wch:10}
+    {wch:12},{wch:8},{wch:20},{wch:12},{wch:22},{wch:10},{wch:10},
+    {wch:8},{wch:12},{wch:10},{wch:16},{wch:35},{wch:35},
+    {wch:10},{wch:6},{wch:20},{wch:12},{wch:10}
   ];
 
   const wb   = XLSX.utils.book_new();
@@ -441,167 +468,6 @@ function exportExcel() {
 
   const { y, mo, d } = todayThai();
   XLSX.writeFile(wb, `UTT_${mode}_${y}${mo}${d}.xlsx`);
-}
-
-// ========== RENDER ==========
-function renderDashboard() {
-  const total    = filtered.length;
-  const stores   = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
-  const isOOS    = currentMode === 'oos';
-  const barClass   = isOOS ? 'red-bar'    : 'yellow-bar';
-  const badgeClass = isOOS ? 'badge-red'  : 'badge-yellow';
-  const kpiColor   = isOOS ? 'oos-card'   : 'stock-card';
-  const label      = isOOS ? 'Out of Stock' : 'Stock OH';
-  const byChannel  = groupBy(filtered, 'Channel');
-  const byBrand    = groupBy(filtered, 'Brand');
-  const byRegion   = groupBy(filtered, 'Region');
-  const timeSeg    = calcSeg(filtered, 'Time_Segment');
-  const weekSeg    = calcSeg(filtered, 'Week_segment');
-
-  document.getElementById('mainContent').innerHTML = `
-  <div class="kpi-section">
-    <div class="kpi-grid">
-      <div class="kpi-card total">
-        <div class="kpi-label">รายการทั้งหมด</div>
-        <div class="kpi-value">${total.toLocaleString()}</div>
-        <div class="kpi-sub">ที่กรองแล้ว</div>
-      </div>
-      <div class="kpi-card stores-card">
-        <div class="kpi-label">จำนวนร้าน</div>
-        <div class="kpi-value">${stores.toLocaleString()}</div>
-        <div class="kpi-sub">unique stores</div>
-      </div>
-      <div class="kpi-card ${kpiColor}" style="grid-column:span 2;">
-        <div class="kpi-label">${label}</div>
-        <div class="kpi-value">${total.toLocaleString()}</div>
-        <div class="kpi-sub">รายการทั้งหมดในโหมดนี้</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><div class="section-title">⏱️ Peak vs OffPeak</div></div>
-    <div class="card-block">
-      <div class="seg-kpi-grid">${renderSegKPI(timeSeg,['Peak','OffPeak'],['peak','offpeak'])}</div>
-      <div class="seg-chart">${renderSegBars(timeSeg,total,['Peak','OffPeak'],['peak','offpeak'])}</div>
-      <hr class="seg-divider">
-      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Weekday vs Weekend</div>
-      <div class="seg-kpi-grid">${renderSegKPI(weekSeg,['Weekday','Weekend'],['weekday','weekend'])}</div>
-      <div class="seg-chart">${renderSegBars(weekSeg,total,['Weekday','Weekend'],['weekday','weekend'])}</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><div class="section-title">📊 แยกตาม Channel</div></div>
-    <div class="card-block">${renderBarChart(byChannel,barClass)}</div>
-  </div>
-  <div class="section">
-    <div class="section-header"><div class="section-title">🏷️ แยกตาม Brand</div></div>
-    <div class="card-block">${renderBarChart(byBrand,barClass)}</div>
-  </div>
-  <div class="section">
-    <div class="section-header"><div class="section-title">📍 แยกตาม Region</div></div>
-    <div class="card-block">${renderBarChart(byRegion,barClass)}</div>
-  </div>
-
-  <div class="export-section">
-    <button class="export-full-btn" onclick="exportExcel()">
-      ⬇ Export ข้อมูลทั้งหมด ${total.toLocaleString()} รายการ เป็น Excel
-    </button>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">📋 รายการล่าสุด</div>
-      <span class="badge ${badgeClass}">${Math.min(total,50)} / ${total}</span>
-    </div>
-    <div class="card-block" style="padding:0;overflow:hidden;">${renderTable(filtered.slice(0,50))}</div>
-  </div>`;
-}
-
-function calcSeg(data, key) {
-  const map = {};
-  data.forEach(r => {
-    const k = r[key] || 'ไม่ระบุ';
-    if (!map[k]) map[k] = { total:0 };
-    map[k].total++;
-  });
-  return map;
-}
-
-function renderSegKPI(map, labels, classes) {
-  return labels.map((label,i) => {
-    const d = map[label] || { total:0 };
-    return `<div class="seg-kpi">
-      <div class="seg-kpi-label">${label}</div>
-      <div class="seg-kpi-val ${classes[i]}">${d.total.toLocaleString()}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderSegBars(map, totalAll, labels, classes) {
-  const max = Math.max(...labels.map(l => (map[l]||{total:0}).total), 1);
-  return labels.map((label,i) => {
-    const d    = map[label] || { total:0 };
-    const pct  = Math.round(d.total/max*100);
-    const tPct = totalAll ? Math.round(d.total/totalAll*100) : 0;
-    return `<div class="seg-row">
-      <div class="seg-label-row">
-        <span class="seg-name ${classes[i]}">${label}</span>
-        <span class="seg-count">${d.total.toLocaleString()} (${tPct}%)</span>
-      </div>
-      <div class="seg-bar-wrap"><div class="seg-bar ${classes[i]}" style="width:${pct}%"></div></div>
-    </div>`;
-  }).join('');
-}
-
-function groupBy(data, key) {
-  const map = {};
-  data.forEach(r => {
-    const k = r[key] || 'ไม่ระบุ';
-    if (!map[k]) map[k] = { total:0 };
-    map[k].total++;
-  });
-  return Object.entries(map).sort((a,b)=>b[1].total-a[1].total).slice(0,8);
-}
-
-function renderBarChart(entries, barClass) {
-  if (!entries.length) return '<div class="empty">ไม่มีข้อมูล</div>';
-  const max = Math.max(...entries.map(e=>e[1].total));
-  return entries.map(([label,d]) => {
-    const pct = max ? Math.round(d.total/max*100) : 0;
-    return `<div class="chart-item">
-      <div class="chart-row">
-        <div class="chart-label" title="${label}">${label}</div>
-        <div class="chart-bar-wrap"><div class="chart-bar ${barClass}" style="width:${pct}%"></div></div>
-        <div class="chart-count">${d.total}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderTable(rows) {
-  if (!rows.length) return '<div class="empty">ไม่มีข้อมูล</div>';
-  const headers = ['วันที่','store_name','Channel','Brand','product_en','Report_Type','OH','Time_Segment','Week_segment'];
-  return `<div class="table-wrap"><table>
-    <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
-    <tbody>${rows.map(r => {
-      const rt = (r.Report_Type||'').toLowerCase();
-      const ts = (r.Time_Segment||'').toLowerCase();
-      const ws = (r.Week_segment||'').toLowerCase();
-      return `<tr>
-        <td style="white-space:nowrap;font-size:11px;">${r._dateStr}</td>
-        <td>${r.store_name||''}</td>
-        <td>${r.Channel||''}</td>
-        <td>${r.Brand||''}</td>
-        <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.product_en||''}</td>
-        <td><span class="type-badge ${rt.includes('stockout')?'type-oos':'type-stock'}">${r.Report_Type||''}</span></td>
-        <td style="font-family:'IBM Plex Mono',monospace;">${r.OH||''}</td>
-        <td>${r.Time_Segment?`<span class="seg-badge seg-${ts}">${r.Time_Segment}</span>`:''}</td>
-        <td>${r.Week_segment?`<span class="seg-badge seg-${ws}">${r.Week_segment}</span>`:''}</td>
-      </tr>`;
-    }).join('')}</tbody>
-  </table></div>`;
 }
 
 initDateRange();
