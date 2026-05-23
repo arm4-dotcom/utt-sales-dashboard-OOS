@@ -14,16 +14,19 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
   .header{background:linear-gradient(135deg,#0d1b35 0%,#0a2a4a 100%);border-bottom:1px solid var(--border);padding:16px 20px 12px;position:sticky;top:0;z-index:100;}
   .header-top{display:flex;align-items:center;justify-content:space-between;}
   .logo{display:flex;align-items:center;gap:10px;}
   .logo-dot{width:32px;height:32px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:#0a0f1e;}
   .logo-text{font-size:17px;font-weight:700;letter-spacing:0.5px;}
   .logo-sub{font-size:11px;color:var(--text2);font-weight:300;}
-  .header-right{display:flex;gap:8px;align-items:center;}
+  .header-right{display:flex;gap:6px;align-items:center;}
   .back-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;display:none;}
-  .refresh-btn{background:var(--surface2);border:1px solid var(--border);color:var(--accent);padding:8px 14px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
+  .refresh-btn{background:var(--surface2);border:1px solid var(--border);color:var(--accent);padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
   .refresh-btn:hover{background:var(--accent);color:#0a0f1e;}
+  .export-btn{background:#1d6f42;border:1px solid #2a9d5c;color:#fff;padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
+  .export-btn:hover{background:#2a9d5c;}
   .last-update{font-size:11px;color:var(--text2);margin-top:6px;display:none;}
   .mode-badge{display:none;align-items:center;gap:8px;margin-top:8px;}
   .mode-chip{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
@@ -81,6 +84,7 @@
   .kpi-card.stock-card .kpi-value{color:var(--stock);}
   .kpi-card.stores-card .kpi-value{color:#a78bfa;}
   .kpi-sub{font-size:11px;color:var(--text2);margin-top:4px;}
+
   .section{padding:16px 20px 0;}
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
   .section-title{font-size:14px;font-weight:600;}
@@ -88,6 +92,7 @@
   .badge-red{background:rgba(255,107,107,0.15);color:var(--stockout);}
   .badge-yellow{background:rgba(255,209,102,0.15);color:var(--stock);}
   .card-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
+
   .chart-item{margin-bottom:10px;}
   .chart-row{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
   .chart-label{font-size:12px;color:var(--text);min-width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -96,6 +101,7 @@
   .chart-bar.red-bar{background:linear-gradient(90deg,#ff6b6b,#ff4040);}
   .chart-bar.yellow-bar{background:linear-gradient(90deg,#ffd166,#ffb703);}
   .chart-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);min-width:30px;text-align:right;}
+
   .seg-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
   .seg-kpi{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
   .seg-kpi-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
@@ -116,6 +122,11 @@
   .seg-bar.weekday{background:linear-gradient(90deg,#a78bfa,#7c3aed);}
   .seg-bar.weekend{background:linear-gradient(90deg,#34d399,#10b981);}
   .seg-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+
+  .export-section{padding:12px 20px 0;}
+  .export-full-btn{width:100%;padding:12px;background:#1d6f42;border:1px solid #2a9d5c;color:#fff;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .export-full-btn:hover{background:#2a9d5c;}
+
   .table-wrap{overflow-x:auto;}
   table{width:100%;border-collapse:collapse;font-size:12px;}
   thead tr{background:var(--surface2);}
@@ -130,6 +141,7 @@
   .seg-offpeak{background:rgba(96,165,250,0.15);color:var(--offpeak);}
   .seg-weekday{background:rgba(167,139,250,0.15);color:var(--weekday);}
   .seg-weekend{background:rgba(52,211,153,0.15);color:var(--weekend);}
+
   .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;}
   .spinner{width:40px;height:40px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg);}}
@@ -152,8 +164,9 @@
       </div>
     </div>
     <div class="header-right">
-      <button class="back-btn" id="backBtn" onclick="goHome()">← กลับ</button>
+      <button class="back-btn"    id="backBtn"    onclick="goHome()">← กลับ</button>
       <button class="refresh-btn" id="refreshBtn" onclick="reloadData()">↻ รีเฟรช</button>
+      <button class="export-btn"  id="exportBtn"  onclick="exportExcel()">⬇ Excel</button>
     </div>
   </div>
   <div class="mode-badge" id="modeBadge">
@@ -217,76 +230,80 @@
 </div>
 
 <script>
-const SHEET_ID = '17kdTngl7ozh1o-TNLfnSOKVFDWzDweYl2zBU6c3Sw50';
+const SHEET_ID  = '17kdTngl7ozh1o-TNLfnSOKVFDWzDweYl2zBU6c3Sw50';
 const SHEET_NAME = 'stockout_reports';
-const API_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+const API_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
-let allData = [];
-let filtered = [];
+let allData     = [];
+let filtered    = [];
 let currentMode = '';
-let dataLoaded = false;
+let dataLoaded  = false;
+let xlsxReady   = false;
 
-// แปลง Google Date string "Date(2026,4,21,...)" → "2026-05-21"
-// month ใน Google Date เริ่มจาก 0 เหมือน JS
+// โหลด SheetJS ล่วงหน้า
+(function loadXLSX() {
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  s.onload = () => { xlsxReady = true; };
+  document.head.appendChild(s);
+})();
+
 function parseGoogleDate(val) {
   if (!val) return '';
   const s = val.toString();
   const m = s.match(/Date\((\d+),(\d+),(\d+)/);
   if (m) {
     const y  = m[1];
-    const mo = String(parseInt(m[2]) + 1).padStart(2, '0'); // +1 เพราะ 0-based
+    const mo = String(parseInt(m[2]) + 1).padStart(2, '0');
     const d  = String(m[3]).padStart(2, '0');
     return `${y}-${mo}-${d}`;
   }
   return s.slice(0, 10);
 }
 
-// วันที่ปัจจุบัน timezone ไทย
 function todayThai() {
-  const now = new Date();
+  const now  = new Date();
   const thai = new Date(now.getTime() + (7 * 60 - now.getTimezoneOffset()) * 60000);
-  const y  = thai.getFullYear();
-  const mo = String(thai.getMonth() + 1).padStart(2, '0');
-  const d  = String(thai.getDate()).padStart(2, '0');
+  const y    = thai.getFullYear();
+  const mo   = String(thai.getMonth() + 1).padStart(2, '0');
+  const d    = String(thai.getDate()).padStart(2, '0');
   return { y, mo, d, str: `${y}-${mo}-${d}` };
 }
 
 function initDateRange() {
   const { y, mo, str } = todayThai();
   document.getElementById('fDateFrom').value = `${y}-${mo}-01`;
-  document.getElementById('fDateTo').value = str;
+  document.getElementById('fDateTo').value   = str;
+}
+
+function showDashUI(show) {
+  ['backBtn','refreshBtn','exportBtn','lastUpdate'].forEach(id => {
+    document.getElementById(id).style.display = show ? (id === 'lastUpdate' ? 'block' : 'block') : 'none';
+  });
+  document.getElementById('modeBadge').style.display  = show ? 'flex'  : 'none';
+  document.getElementById('filterPanel').style.display = show ? 'block' : 'none';
+  document.getElementById('dashPage').style.display    = show ? 'block' : 'none';
+  document.getElementById('homePage').style.display    = show ? 'none'  : 'block';
 }
 
 function enterMode(mode) {
   currentMode = mode;
-  document.getElementById('homePage').style.display = 'none';
-  document.getElementById('filterPanel').style.display = 'block';
-  document.getElementById('dashPage').style.display = 'block';
-  document.getElementById('backBtn').style.display = 'block';
-  document.getElementById('refreshBtn').style.display = 'block';
-  document.getElementById('lastUpdate').style.display = 'block';
-  document.getElementById('modeBadge').style.display = 'flex';
+  showDashUI(true);
   const chip = document.getElementById('modeChip');
   if (mode === 'oos') {
-    chip.textContent = '🚫 Out of Stock';
-    chip.className = 'mode-chip oos';
+    chip.textContent  = '🚫 Out of Stock';
+    chip.className    = 'mode-chip oos';
     document.getElementById('logoSub').textContent = 'Out of Stock Report';
   } else {
-    chip.textContent = '📦 Stock OH';
-    chip.className = 'mode-chip stock';
+    chip.textContent  = '📦 Stock OH';
+    chip.className    = 'mode-chip stock';
     document.getElementById('logoSub').textContent = 'Stock OH Report';
   }
   if (!dataLoaded) { loadData(); } else { applyFilter(); }
 }
 
 function goHome() {
-  document.getElementById('homePage').style.display = 'block';
-  document.getElementById('filterPanel').style.display = 'none';
-  document.getElementById('dashPage').style.display = 'none';
-  document.getElementById('backBtn').style.display = 'none';
-  document.getElementById('refreshBtn').style.display = 'none';
-  document.getElementById('lastUpdate').style.display = 'none';
-  document.getElementById('modeBadge').style.display = 'none';
+  showDashUI(false);
   document.getElementById('logoSub').textContent = 'Stock & OOS Report';
   currentMode = '';
 }
@@ -301,12 +318,12 @@ async function loadData() {
     `<div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>`;
   const url = API_URL + '&_=' + Date.now();
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-    const res = await fetch(url, { signal: controller.signal });
-    clearTimeout(timeout);
+    const ctrl = new AbortController();
+    const t    = setTimeout(() => ctrl.abort(), 15000);
+    const res  = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(t);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
+    const text  = await res.text();
     const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
     if (!match) throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
     const json = JSON.parse(match[1]);
@@ -314,7 +331,6 @@ async function loadData() {
     allData = json.table.rows.filter(r => r && r.c).map(r => {
       const obj = {};
       cols.forEach((c, i) => { obj[c] = r.c[i]?.v ?? ''; });
-      // แปลง timestamp เป็น string วันที่ไว้ใช้ filter
       obj._dateStr = parseGoogleDate(obj.timestamp);
       return obj;
     });
@@ -373,18 +389,65 @@ function applyFilter() {
     if (ca && r.Category     !== ca) return false;
     if (ws && r.Week_segment !== ws) return false;
     if (ts && r.Time_Segment !== ts) return false;
-    // เปรียบเทียบวันที่ด้วย _dateStr ที่แปลงไว้แล้ว
-    if (df && r._dateStr < df) return false;
-    if (dt && r._dateStr > dt) return false;
+    if (df && r._dateStr     <  df)  return false;
+    if (dt && r._dateStr     >  dt)  return false;
     return true;
   });
   renderDashboard();
 }
 
+// ========== EXPORT EXCEL ==========
+function exportExcel() {
+  if (!filtered.length) { alert('ไม่มีข้อมูลที่จะ Export'); return; }
+  if (!xlsxReady) { alert('กรุณารอสักครู่ กำลังโหลด Export library...'); return; }
+
+  const headers = [
+    'วันที่','store_id','store_name','Channel','Region','Area',
+    'BU','Category','Brand','product_th','product_en',
+    'Report_Type','OH','Reason','Time_Segment','Week_segment'
+  ];
+
+  const rows = filtered.map(r => [
+    r._dateStr,
+    r.store_id   ? Number(r.store_id)   : '',
+    r.store_name  || '',
+    r.Channel     || '',
+    r.Region      || '',
+    r.Area        || '',
+    r.BU          || '',
+    r.Category    || '',
+    r.Brand       || '',
+    r.product_th  || '',
+    r.product_en  || '',
+    r.Report_Type || '',
+    r.OH          !== '' ? Number(r.OH) : '',
+    r.Reason      || '',
+    r.Time_Segment || '',
+    r.Week_segment || ''
+  ]);
+
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+  // ความกว้าง column
+  ws['!cols'] = [
+    {wch:12},{wch:12},{wch:20},{wch:8},{wch:10},{wch:10},
+    {wch:8},{wch:10},{wch:10},{wch:30},{wch:30},
+    {wch:10},{wch:6},{wch:18},{wch:12},{wch:10}
+  ];
+
+  const wb   = XLSX.utils.book_new();
+  const mode = currentMode === 'oos' ? 'OOS' : 'StockOH';
+  XLSX.utils.book_append_sheet(wb, ws, mode);
+
+  const { y, mo, d } = todayThai();
+  XLSX.writeFile(wb, `UTT_${mode}_${y}${mo}${d}.xlsx`);
+}
+
+// ========== RENDER ==========
 function renderDashboard() {
-  const total  = filtered.length;
-  const stores = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
-  const isOOS  = currentMode === 'oos';
+  const total    = filtered.length;
+  const stores   = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
+  const isOOS    = currentMode === 'oos';
   const barClass   = isOOS ? 'red-bar'    : 'yellow-bar';
   const badgeClass = isOOS ? 'badge-red'  : 'badge-yellow';
   const kpiColor   = isOOS ? 'oos-card'   : 'stock-card';
@@ -415,6 +478,7 @@ function renderDashboard() {
       </div>
     </div>
   </div>
+
   <div class="section">
     <div class="section-header"><div class="section-title">⏱️ Peak vs OffPeak</div></div>
     <div class="card-block">
@@ -426,6 +490,7 @@ function renderDashboard() {
       <div class="seg-chart">${renderSegBars(weekSeg,total,['Weekday','Weekend'],['weekday','weekend'])}</div>
     </div>
   </div>
+
   <div class="section">
     <div class="section-header"><div class="section-title">📊 แยกตาม Channel</div></div>
     <div class="card-block">${renderBarChart(byChannel,barClass)}</div>
@@ -438,6 +503,13 @@ function renderDashboard() {
     <div class="section-header"><div class="section-title">📍 แยกตาม Region</div></div>
     <div class="card-block">${renderBarChart(byRegion,barClass)}</div>
   </div>
+
+  <div class="export-section">
+    <button class="export-full-btn" onclick="exportExcel()">
+      ⬇ Export ข้อมูลทั้งหมด ${total.toLocaleString()} รายการ เป็น Excel
+    </button>
+  </div>
+
   <div class="section">
     <div class="section-header">
       <div class="section-title">📋 รายการล่าสุด</div>
@@ -470,7 +542,7 @@ function renderSegKPI(map, labels, classes) {
 function renderSegBars(map, totalAll, labels, classes) {
   const max = Math.max(...labels.map(l => (map[l]||{total:0}).total), 1);
   return labels.map((label,i) => {
-    const d = map[label] || { total:0 };
+    const d    = map[label] || { total:0 };
     const pct  = Math.round(d.total/max*100);
     const tPct = totalAll ? Math.round(d.total/totalAll*100) : 0;
     return `<div class="seg-row">
