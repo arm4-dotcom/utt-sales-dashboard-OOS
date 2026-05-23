@@ -22,146 +22,71 @@
     --text2: #8899bb;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Sarabun', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+  body { font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
-  /* ========== HEADER ========== */
   .header {
-    background: linear-gradient(135deg, #0d1b35 0%, #0a2a4a 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 20px 12px;
-    position: sticky; top: 0; z-index: 100;
+    background:linear-gradient(135deg,#0d1b35 0%,#0a2a4a 100%);
+    border-bottom:1px solid var(--border);
+    padding:16px 20px 12px;
+    position:sticky; top:0; z-index:100;
   }
   .header-top { display:flex; align-items:center; justify-content:space-between; }
   .logo { display:flex; align-items:center; gap:10px; }
-  .logo-dot {
-    width:32px; height:32px; border-radius:8px;
-    background: var(--accent);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px;
-    color:#0a0f1e;
-  }
+  .logo-dot { width:32px; height:32px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px; color:#0a0f1e; }
   .logo-text { font-size:17px; font-weight:700; letter-spacing:0.5px; }
   .logo-sub { font-size:11px; color:var(--text2); font-weight:300; }
   .header-right { display:flex; gap:8px; align-items:center; }
-  .back-btn {
-    background: var(--surface2); border:1px solid var(--border);
-    color: var(--text2); padding:8px 12px; border-radius:8px;
-    font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer;
-    display:none;
-  }
-  .refresh-btn {
-    background: var(--surface2); border:1px solid var(--border);
-    color: var(--accent); padding:8px 14px; border-radius:8px;
-    font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer;
-    transition: all 0.2s; display:none;
-  }
-  .refresh-btn:hover { background: var(--accent); color:#0a0f1e; }
+  .back-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text2); padding:8px 12px; border-radius:8px; font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer; display:none; }
+  .refresh-btn { background:var(--surface2); border:1px solid var(--border); color:var(--accent); padding:8px 14px; border-radius:8px; font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; display:none; }
+  .refresh-btn:hover { background:var(--accent); color:#0a0f1e; }
   .last-update { font-size:11px; color:var(--text2); margin-top:6px; display:none; }
+  .mode-badge { display:none; align-items:center; gap:8px; margin-top:8px; }
+  .mode-chip { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+  .mode-chip.oos { background:rgba(255,107,107,0.15); color:var(--stockout); }
+  .mode-chip.stock { background:rgba(255,209,102,0.15); color:var(--stock); }
 
-  /* ========== HOME PAGE ========== */
-  #homePage { padding: 30px 20px; }
-  .home-greeting {
-    text-align:center; margin-bottom:32px;
-  }
+  /* HOME */
+  #homePage { padding:30px 20px; }
+  .home-greeting { text-align:center; margin-bottom:32px; }
   .home-greeting h1 { font-size:22px; font-weight:700; margin-bottom:6px; }
   .home-greeting p { font-size:14px; color:var(--text2); }
   .home-cards { display:flex; flex-direction:column; gap:16px; }
-  .home-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius:16px;
-    padding: 28px 24px;
-    cursor:pointer;
-    transition: all 0.2s;
-    position:relative; overflow:hidden;
-    display:flex; align-items:center; gap:20px;
-  }
-  .home-card::before {
-    content:''; position:absolute;
-    top:0; left:0; right:0; height:4px;
-  }
-  .home-card.oos::before { background: var(--stockout); }
-  .home-card.stock::before { background: var(--stock); }
-  .home-card:hover { transform:translateY(-2px); border-color: var(--accent); }
-  .home-card-icon {
-    width:60px; height:60px; border-radius:14px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:28px; flex-shrink:0;
-  }
+  .home-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px 24px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; display:flex; align-items:center; gap:20px; }
+  .home-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+  .home-card.oos::before { background:var(--stockout); }
+  .home-card.stock::before { background:var(--stock); }
+  .home-card:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .home-card-icon { width:60px; height:60px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
   .home-card.oos .home-card-icon { background:rgba(255,107,107,0.12); }
   .home-card.stock .home-card-icon { background:rgba(255,209,102,0.12); }
   .home-card-info { flex:1; }
   .home-card-title { font-size:18px; font-weight:700; margin-bottom:4px; }
-  .home-card.oos .home-card-title { color: var(--stockout); }
-  .home-card.stock .home-card-title { color: var(--stock); }
+  .home-card.oos .home-card-title { color:var(--stockout); }
+  .home-card.stock .home-card-title { color:var(--stock); }
   .home-card-desc { font-size:13px; color:var(--text2); line-height:1.5; }
   .home-card-arrow { font-size:22px; color:var(--text2); }
 
-  /* mode badge */
-  .mode-badge {
-    display:none; align-items:center; gap:8px;
-    margin-top:8px;
-  }
-  .mode-chip {
-    padding:4px 12px; border-radius:20px;
-    font-size:12px; font-weight:600;
-    font-family:'IBM Plex Mono',monospace;
-  }
-  .mode-chip.oos { background:rgba(255,107,107,0.15); color:var(--stockout); }
-  .mode-chip.stock { background:rgba(255,209,102,0.15); color:var(--stock); }
-
-  /* ========== FILTER PANEL ========== */
-  #filterPanel {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
-    display:none;
-  }
-  .filter-title {
-    font-size:11px; color:var(--text2); text-transform:uppercase;
-    letter-spacing:1.5px; margin-bottom:10px; font-weight:600;
-  }
+  /* FILTER */
+  #filterPanel { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 20px; display:none; }
+  .filter-title { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; font-weight:600; }
   .filter-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .filter-group { display:flex; flex-direction:column; gap:4px; }
   .filter-group.full { grid-column:span 2; }
   .filter-label { font-size:11px; color:var(--text2); }
-  .filter-select {
-    background: var(--surface2); border:1px solid var(--border);
-    color: var(--text); padding:7px 10px; border-radius:6px;
-    font-family:'Sarabun',sans-serif; font-size:13px;
-    width:100%; appearance:none; cursor:pointer;
-  }
+  .filter-select { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:6px; font-family:'Sarabun',sans-serif; font-size:13px; width:100%; appearance:none; cursor:pointer; }
   .filter-select:focus { outline:none; border-color:var(--accent); }
   .date-row { display:flex; gap:8px; align-items:center; }
-  .date-input {
-    background:var(--surface2); border:1px solid var(--border);
-    color:var(--text); padding:7px 10px; border-radius:6px;
-    font-family:'Sarabun',sans-serif; font-size:13px; flex:1;
-  }
+  .date-input { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:6px; font-family:'Sarabun',sans-serif; font-size:13px; flex:1; }
   .date-input:focus { outline:none; border-color:var(--accent); }
   .date-sep { color:var(--text2); font-size:13px; }
-  .apply-btn {
-    background:var(--accent); color:#0a0f1e; border:none;
-    padding:8px 18px; border-radius:6px;
-    font-family:'Sarabun',sans-serif; font-weight:700; font-size:13px;
-    cursor:pointer; margin-top:10px; width:100%; transition:opacity 0.2s;
-  }
+  .apply-btn { background:var(--accent); color:#0a0f1e; border:none; padding:8px 18px; border-radius:6px; font-family:'Sarabun',sans-serif; font-weight:700; font-size:13px; cursor:pointer; margin-top:10px; width:100%; transition:opacity 0.2s; }
   .apply-btn:hover { opacity:0.85; }
 
-  /* ========== DASHBOARD ========== */
+  /* DASHBOARD */
   #dashPage { display:none; padding-bottom:40px; }
-
   .kpi-section { padding:16px 20px 0; }
   .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .kpi-card {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; padding:14px; position:relative; overflow:hidden;
-  }
+  .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; position:relative; overflow:hidden; }
   .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
   .kpi-card.total::before { background:var(--accent); }
   .kpi-card.oos-card::before { background:var(--stockout); }
@@ -181,13 +106,8 @@
   .badge { font-size:11px; padding:3px 8px; border-radius:20px; font-family:'IBM Plex Mono',monospace; }
   .badge-red { background:rgba(255,107,107,0.15); color:var(--stockout); }
   .badge-yellow { background:rgba(255,209,102,0.15); color:var(--stock); }
+  .card-block { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
 
-  .card-block {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; padding:14px; margin-bottom:12px;
-  }
-
-  /* Bar chart */
   .chart-item { margin-bottom:10px; }
   .chart-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
   .chart-label { font-size:12px; color:var(--text); min-width:80px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -197,7 +117,6 @@
   .chart-bar.yellow-bar { background:linear-gradient(90deg,#ffd166,#ffb703); }
   .chart-count { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text2); min-width:30px; text-align:right; }
 
-  /* Segment */
   .seg-kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
   .seg-kpi { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
   .seg-kpi-label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:1px; }
@@ -221,10 +140,8 @@
   .seg-bar.offpeak { background:linear-gradient(90deg,#60a5fa,#3b82f6); }
   .seg-bar.weekday { background:linear-gradient(90deg,#a78bfa,#7c3aed); }
   .seg-bar.weekend { background:linear-gradient(90deg,#34d399,#10b981); }
-  .seg-sub { font-size:11px; color:var(--text2); display:flex; gap:10px; margin-top:2px; }
   .seg-divider { border:none; border-top:1px solid var(--border); margin:12px 0; }
 
-  /* Table */
   .table-wrap { overflow-x:auto; }
   table { width:100%; border-collapse:collapse; font-size:12px; }
   thead tr { background:var(--surface2); }
@@ -240,14 +157,11 @@
   .seg-weekday { background:rgba(167,139,250,0.15); color:var(--weekday); }
   .seg-weekend { background:rgba(52,211,153,0.15); color:var(--weekend); }
 
-  /* Loading / Empty */
   .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; gap:16px; }
   .spinner { width:40px; height:40px; border-radius:50%; border:3px solid var(--border); border-top-color:var(--accent); animation:spin 0.8s linear infinite; }
   @keyframes spin { to { transform:rotate(360deg); } }
   .loading-text { font-size:14px; color:var(--text2); }
   .empty { text-align:center; padding:40px 20px; color:var(--text2); font-size:14px; }
-
-  /* Error retry */
   .error-box { text-align:center; padding:40px 20px; }
   .error-box p { color:var(--stockout); margin-bottom:16px; font-size:14px; }
   .retry-btn { background:var(--accent); color:#0a0f1e; border:none; padding:10px 24px; border-radius:8px; font-family:'Sarabun',sans-serif; font-weight:700; font-size:14px; cursor:pointer; }
@@ -255,7 +169,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-top">
     <div class="logo">
@@ -276,7 +189,6 @@
   <div class="last-update" id="lastUpdate"></div>
 </div>
 
-<!-- HOME PAGE -->
 <div id="homePage">
   <div class="home-greeting">
     <h1>สวัสดีครับ 👋</h1>
@@ -302,7 +214,6 @@
   </div>
 </div>
 
-<!-- FILTER PANEL -->
 <div id="filterPanel">
   <div class="filter-title">🔍 Filter</div>
   <div class="filter-grid">
@@ -326,7 +237,6 @@
   <button class="apply-btn" onclick="applyFilter()">ดูข้อมูล</button>
 </div>
 
-<!-- DASHBOARD PAGE -->
 <div id="dashPage">
   <div id="mainContent">
     <div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>
@@ -336,14 +246,29 @@
 <script>
 const SHEET_ID = '17kdTngl7ozh1o-TNLfnSOKVFDWzDweYl2zBU6c3Sw50';
 const SHEET_NAME = 'stockout_reports';
-const PROXY_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+const API_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
 let allData = [];
 let filtered = [];
-let currentMode = ''; // 'oos' | 'stock'
+let currentMode = '';
 let dataLoaded = false;
 
-// ========== NAVIGATION ==========
+function getThaiDateStr(date) {
+  const offset = 7 * 60;
+  const thai = new Date(date.getTime() + (offset - date.getTimezoneOffset()) * 60000);
+  const y = thai.getFullYear();
+  const mo = String(thai.getMonth()+1).padStart(2,'0');
+  const d = String(thai.getDate()).padStart(2,'0');
+  return { y, mo, d, full: `${y}-${mo}-${d}` };
+}
+
+function initDateRange() {
+  const now = new Date();
+  const { y, mo, full } = getThaiDateStr(now);
+  document.getElementById('fDateFrom').value = `${y}-${mo}-01`;
+  document.getElementById('fDateTo').value = full;
+}
+
 function enterMode(mode) {
   currentMode = mode;
   document.getElementById('homePage').style.display = 'none';
@@ -373,7 +298,6 @@ function enterMode(mode) {
 }
 
 function goHome() {
-  currentMode = '';
   document.getElementById('homePage').style.display = 'block';
   document.getElementById('filterPanel').style.display = 'none';
   document.getElementById('dashPage').style.display = 'none';
@@ -382,23 +306,19 @@ function goHome() {
   document.getElementById('lastUpdate').style.display = 'none';
   document.getElementById('modeBadge').style.display = 'none';
   document.getElementById('logoSub').textContent = 'Stock & OOS Report';
+  currentMode = '';
 }
 
-// ========== LOAD DATA ==========
 async function loadData() {
   document.getElementById('mainContent').innerHTML =
     `<div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>`;
 
-  // ลอง fetch ด้วย cache bust
-  const url = PROXY_URL + '&_=' + Date.now();
-
+  const url = API_URL + '&_=' + Date.now();
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
-
     const res = await fetch(url, { signal: controller.signal });
     clearTimeout(timeout);
-
     if (!res.ok) throw new Error('HTTP ' + res.status);
 
     const text = await res.text();
@@ -406,7 +326,7 @@ async function loadData() {
     if (!match) throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
 
     const json = JSON.parse(match[1]);
-    const cols = json.table.cols.map(c => c.label);
+    const cols = json.table.cols.map(c => c.label.trim()); // trim ช่องว่าง
     allData = json.table.rows
       .filter(r => r && r.c)
       .map(r => {
@@ -421,7 +341,7 @@ async function loadData() {
     document.getElementById('lastUpdate').textContent =
       'อัปเดตล่าสุด: ' + new Date().toLocaleString('th-TH');
 
-  } catch (e) {
+  } catch(e) {
     const msg = e.name === 'AbortError' ? 'หมดเวลาเชื่อมต่อ กรุณาลองใหม่' : e.message;
     document.getElementById('mainContent').innerHTML = `
       <div class="error-box">
@@ -431,7 +351,6 @@ async function loadData() {
   }
 }
 
-// ========== FILTERS ==========
 function populateFilters() {
   const fields = {
     fChannel:'Channel', fRegion:'Region', fArea:'Area',
@@ -462,10 +381,8 @@ function applyFilter() {
 
   filtered = allData.filter(r => {
     const rt = (r.Report_Type || '').toLowerCase();
-    // กรองตาม mode
     if (currentMode === 'oos' && !rt.includes('stockout')) return false;
     if (currentMode === 'stock' && rt !== 'stock') return false;
-    // filter อื่น
     if (ch && r.Channel !== ch) return false;
     if (re && r.Region !== re) return false;
     if (ar && r.Area !== ar) return false;
@@ -475,7 +392,18 @@ function applyFilter() {
     if (ws && r.Week_segment !== ws) return false;
     if (ts && r.Time_Segment !== ts) return false;
     if (df || dt) {
-      const stamp = r.timestamp ? r.timestamp.toString().slice(0, 10) : '';
+      // แปลง timestamp จาก Google (Date object ms) เป็น yyyy-mm-dd
+      let stamp = '';
+      if (r.timestamp) {
+        const ms = typeof r.timestamp === 'number' ? r.timestamp : Date.parse(r.timestamp);
+        if (!isNaN(ms)) {
+          const d = new Date(ms);
+          const thai = new Date(d.getTime() + (7*60 - d.getTimezoneOffset()) * 60000);
+          stamp = thai.toISOString().slice(0,10);
+        } else {
+          stamp = r.timestamp.toString().slice(0,10);
+        }
+      }
       if (df && stamp < df) return false;
       if (dt && stamp > dt) return false;
     }
@@ -485,23 +413,20 @@ function applyFilter() {
   renderDashboard();
 }
 
-// ========== RENDER ==========
 function renderDashboard() {
   const total = filtered.length;
   const stores = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
   const isOOS = currentMode === 'oos';
+  const barClass = isOOS ? 'red-bar' : 'yellow-bar';
+  const badgeClass = isOOS ? 'badge-red' : 'badge-yellow';
+  const kpiColor = isOOS ? 'oos-card' : 'stock-card';
+  const label = isOOS ? 'Out of Stock' : 'Stock OH';
 
   const byChannel = groupBy(filtered, 'Channel');
   const byBrand   = groupBy(filtered, 'Brand');
   const byRegion  = groupBy(filtered, 'Region');
   const timeSeg   = calcSeg(filtered, 'Time_Segment');
   const weekSeg   = calcSeg(filtered, 'Week_segment');
-
-  const barClass = isOOS ? 'red-bar' : 'yellow-bar';
-  const badgeClass = isOOS ? 'badge-red' : 'badge-yellow';
-  const kpiColor = isOOS ? 'oos-card' : 'stock-card';
-  const kpiVal   = isOOS ? 'var(--stockout)' : 'var(--stock)';
-  const label    = isOOS ? 'Out of Stock' : 'Stock OH';
 
   document.getElementById('mainContent').innerHTML = `
   <div class="kpi-section">
@@ -525,24 +450,14 @@ function renderDashboard() {
   </div>
 
   <div class="section">
-    <div class="section-header">
-      <div class="section-title">⏱️ Peak vs OffPeak</div>
-    </div>
+    <div class="section-header"><div class="section-title">⏱️ Peak vs OffPeak</div></div>
     <div class="card-block">
-      <div class="seg-kpi-grid">
-        ${renderSegKPI(timeSeg, ['Peak','OffPeak'], ['peak','offpeak'])}
-      </div>
-      <div class="seg-chart">
-        ${renderSegBars(timeSeg, total, ['Peak','OffPeak'], ['peak','offpeak'])}
-      </div>
+      <div class="seg-kpi-grid">${renderSegKPI(timeSeg,['Peak','OffPeak'],['peak','offpeak'])}</div>
+      <div class="seg-chart">${renderSegBars(timeSeg,total,['Peak','OffPeak'],['peak','offpeak'])}</div>
       <hr class="seg-divider">
       <div style="font-size:12px;color:var(--text2);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Weekday vs Weekend</div>
-      <div class="seg-kpi-grid">
-        ${renderSegKPI(weekSeg, ['Weekday','Weekend'], ['weekday','weekend'])}
-      </div>
-      <div class="seg-chart">
-        ${renderSegBars(weekSeg, total, ['Weekday','Weekend'], ['weekday','weekend'])}
-      </div>
+      <div class="seg-kpi-grid">${renderSegKPI(weekSeg,['Weekday','Weekend'],['weekday','weekend'])}</div>
+      <div class="seg-chart">${renderSegBars(weekSeg,total,['Weekday','Weekend'],['weekday','weekend'])}</div>
     </div>
   </div>
 
@@ -566,9 +481,7 @@ function renderDashboard() {
       <div class="section-title">📋 รายการล่าสุด</div>
       <span class="badge ${badgeClass}">${Math.min(total,50)} / ${total}</span>
     </div>
-    <div class="card-block" style="padding:0;overflow:hidden;">
-      ${renderTable(filtered.slice(0,50))}
-    </div>
+    <div class="card-block" style="padding:0;overflow:hidden;">${renderTable(filtered.slice(0,50))}</div>
   </div>`;
 }
 
@@ -583,7 +496,7 @@ function calcSeg(data, key) {
 }
 
 function renderSegKPI(map, labels, classes) {
-  return labels.map((label, i) => {
+  return labels.map((label,i) => {
     const d = map[label] || { total:0 };
     return `<div class="seg-kpi">
       <div class="seg-kpi-label">${label}</div>
@@ -594,18 +507,16 @@ function renderSegKPI(map, labels, classes) {
 
 function renderSegBars(map, totalAll, labels, classes) {
   const max = Math.max(...labels.map(l => (map[l]||{total:0}).total), 1);
-  return labels.map((label, i) => {
+  return labels.map((label,i) => {
     const d = map[label] || { total:0 };
-    const pct = Math.round(d.total / max * 100);
-    const totalPct = totalAll ? Math.round(d.total / totalAll * 100) : 0;
+    const pct = Math.round(d.total/max*100);
+    const tPct = totalAll ? Math.round(d.total/totalAll*100) : 0;
     return `<div class="seg-row">
       <div class="seg-label-row">
         <span class="seg-name ${classes[i]}">${label}</span>
-        <span class="seg-count">${d.total.toLocaleString()} (${totalPct}%)</span>
+        <span class="seg-count">${d.total.toLocaleString()} (${tPct}%)</span>
       </div>
-      <div class="seg-bar-wrap">
-        <div class="seg-bar ${classes[i]}" style="width:${pct}%"></div>
-      </div>
+      <div class="seg-bar-wrap"><div class="seg-bar ${classes[i]}" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 }
@@ -617,20 +528,18 @@ function groupBy(data, key) {
     if (!map[k]) map[k] = { total:0 };
     map[k].total++;
   });
-  return Object.entries(map).sort((a,b) => b[1].total - a[1].total).slice(0,8);
+  return Object.entries(map).sort((a,b)=>b[1].total-a[1].total).slice(0,8);
 }
 
 function renderBarChart(entries, barClass) {
   if (!entries.length) return '<div class="empty">ไม่มีข้อมูล</div>';
-  const max = Math.max(...entries.map(e => e[1].total));
-  return entries.map(([label, d]) => {
-    const pct = max ? Math.round(d.total / max * 100) : 0;
+  const max = Math.max(...entries.map(e=>e[1].total));
+  return entries.map(([label,d]) => {
+    const pct = max ? Math.round(d.total/max*100) : 0;
     return `<div class="chart-item">
       <div class="chart-row">
         <div class="chart-label" title="${label}">${label}</div>
-        <div class="chart-bar-wrap">
-          <div class="chart-bar ${barClass}" style="width:${pct}%"></div>
-        </div>
+        <div class="chart-bar-wrap"><div class="chart-bar ${barClass}" style="width:${pct}%"></div></div>
         <div class="chart-count">${d.total}</div>
       </div>
     </div>`;
@@ -646,8 +555,15 @@ function renderTable(rows) {
       const rt = (r.Report_Type||'').toLowerCase();
       const ts = (r.Time_Segment||'').toLowerCase();
       const ws = (r.Week_segment||'').toLowerCase();
+      let tsStr = r.timestamp ? (() => {
+        const ms = typeof r.timestamp === 'number' ? r.timestamp : Date.parse(r.timestamp);
+        if (isNaN(ms)) return r.timestamp.toString().slice(0,16);
+        const d = new Date(ms);
+        const thai = new Date(d.getTime() + (7*60 - d.getTimezoneOffset())*60000);
+        return thai.toISOString().slice(0,16).replace('T',' ');
+      })() : '';
       return `<tr>
-        <td style="white-space:nowrap;font-size:11px;">${(r.timestamp||'').toString().slice(0,16)}</td>
+        <td style="white-space:nowrap;font-size:11px;">${tsStr}</td>
         <td>${r.store_name||''}</td>
         <td>${r.Channel||''}</td>
         <td>${r.Brand||''}</td>
@@ -661,11 +577,8 @@ function renderTable(rows) {
   </table></div>`;
 }
 
-// Init default date range
-const now = new Date();
-const y = now.getFullYear(), mo = String(now.getMonth()+1).padStart(2,'0');
-document.getElementById('fDateFrom').value = `${y}-${mo}-01`;
-document.getElementById('fDateTo').value = now.toISOString().slice(0,10);
+// Init
+initDateRange();
 </script>
 </body>
 </html>
