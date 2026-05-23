@@ -7,164 +7,137 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0f1e;
-    --surface: #111827;
-    --surface2: #1a2236;
-    --border: #1e2d45;
-    --accent: #00d4aa;
-    --stockout: #ff6b6b;
-    --stock: #ffd166;
-    --peak: #f97316;
-    --offpeak: #60a5fa;
-    --weekday: #a78bfa;
-    --weekend: #34d399;
-    --text: #e8f0fe;
-    --text2: #8899bb;
+    --bg:#0a0f1e; --surface:#111827; --surface2:#1a2236; --border:#1e2d45;
+    --accent:#00d4aa; --stockout:#ff6b6b; --stock:#ffd166;
+    --peak:#f97316; --offpeak:#60a5fa; --weekday:#a78bfa; --weekend:#34d399;
+    --text:#e8f0fe; --text2:#8899bb;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .header{background:linear-gradient(135deg,#0d1b35 0%,#0a2a4a 100%);border-bottom:1px solid var(--border);padding:16px 20px 12px;position:sticky;top:0;z-index:100;}
+  .header-top{display:flex;align-items:center;justify-content:space-between;}
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-dot{width:32px;height:32px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:#0a0f1e;}
+  .logo-text{font-size:17px;font-weight:700;letter-spacing:0.5px;}
+  .logo-sub{font-size:11px;color:var(--text2);font-weight:300;}
+  .header-right{display:flex;gap:8px;align-items:center;}
+  .back-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;display:none;}
+  .refresh-btn{background:var(--surface2);border:1px solid var(--border);color:var(--accent);padding:8px 14px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
+  .refresh-btn:hover{background:var(--accent);color:#0a0f1e;}
+  .last-update{font-size:11px;color:var(--text2);margin-top:6px;display:none;}
+  .mode-badge{display:none;align-items:center;gap:8px;margin-top:8px;}
+  .mode-chip{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
+  .mode-chip.oos{background:rgba(255,107,107,0.15);color:var(--stockout);}
+  .mode-chip.stock{background:rgba(255,209,102,0.15);color:var(--stock);}
 
-  .header {
-    background:linear-gradient(135deg,#0d1b35 0%,#0a2a4a 100%);
-    border-bottom:1px solid var(--border);
-    padding:16px 20px 12px;
-    position:sticky; top:0; z-index:100;
-  }
-  .header-top { display:flex; align-items:center; justify-content:space-between; }
-  .logo { display:flex; align-items:center; gap:10px; }
-  .logo-dot { width:32px; height:32px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px; color:#0a0f1e; }
-  .logo-text { font-size:17px; font-weight:700; letter-spacing:0.5px; }
-  .logo-sub { font-size:11px; color:var(--text2); font-weight:300; }
-  .header-right { display:flex; gap:8px; align-items:center; }
-  .back-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text2); padding:8px 12px; border-radius:8px; font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer; display:none; }
-  .refresh-btn { background:var(--surface2); border:1px solid var(--border); color:var(--accent); padding:8px 14px; border-radius:8px; font-family:'Sarabun',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; display:none; }
-  .refresh-btn:hover { background:var(--accent); color:#0a0f1e; }
-  .last-update { font-size:11px; color:var(--text2); margin-top:6px; display:none; }
-  .mode-badge { display:none; align-items:center; gap:8px; margin-top:8px; }
-  .mode-chip { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
-  .mode-chip.oos { background:rgba(255,107,107,0.15); color:var(--stockout); }
-  .mode-chip.stock { background:rgba(255,209,102,0.15); color:var(--stock); }
+  #homePage{padding:30px 20px;}
+  .home-greeting{text-align:center;margin-bottom:32px;}
+  .home-greeting h1{font-size:22px;font-weight:700;margin-bottom:6px;}
+  .home-greeting p{font-size:14px;color:var(--text2);}
+  .home-cards{display:flex;flex-direction:column;gap:16px;}
+  .home-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 24px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;display:flex;align-items:center;gap:20px;}
+  .home-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .home-card.oos::before{background:var(--stockout);}
+  .home-card.stock::before{background:var(--stock);}
+  .home-card:hover{transform:translateY(-2px);border-color:var(--accent);}
+  .home-card-icon{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .home-card.oos .home-card-icon{background:rgba(255,107,107,0.12);}
+  .home-card.stock .home-card-icon{background:rgba(255,209,102,0.12);}
+  .home-card-info{flex:1;}
+  .home-card-title{font-size:18px;font-weight:700;margin-bottom:4px;}
+  .home-card.oos .home-card-title{color:var(--stockout);}
+  .home-card.stock .home-card-title{color:var(--stock);}
+  .home-card-desc{font-size:13px;color:var(--text2);line-height:1.5;}
+  .home-card-arrow{font-size:22px;color:var(--text2);}
 
-  /* HOME */
-  #homePage { padding:30px 20px; }
-  .home-greeting { text-align:center; margin-bottom:32px; }
-  .home-greeting h1 { font-size:22px; font-weight:700; margin-bottom:6px; }
-  .home-greeting p { font-size:14px; color:var(--text2); }
-  .home-cards { display:flex; flex-direction:column; gap:16px; }
-  .home-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px 24px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; display:flex; align-items:center; gap:20px; }
-  .home-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
-  .home-card.oos::before { background:var(--stockout); }
-  .home-card.stock::before { background:var(--stock); }
-  .home-card:hover { transform:translateY(-2px); border-color:var(--accent); }
-  .home-card-icon { width:60px; height:60px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
-  .home-card.oos .home-card-icon { background:rgba(255,107,107,0.12); }
-  .home-card.stock .home-card-icon { background:rgba(255,209,102,0.12); }
-  .home-card-info { flex:1; }
-  .home-card-title { font-size:18px; font-weight:700; margin-bottom:4px; }
-  .home-card.oos .home-card-title { color:var(--stockout); }
-  .home-card.stock .home-card-title { color:var(--stock); }
-  .home-card-desc { font-size:13px; color:var(--text2); line-height:1.5; }
-  .home-card-arrow { font-size:22px; color:var(--text2); }
+  #filterPanel{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:none;}
+  .filter-title{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-weight:600;}
+  .filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .filter-group{display:flex;flex-direction:column;gap:4px;}
+  .filter-group.full{grid-column:span 2;}
+  .filter-label{font-size:11px;color:var(--text2);}
+  .filter-select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-family:'Sarabun',sans-serif;font-size:13px;width:100%;appearance:none;cursor:pointer;}
+  .filter-select:focus{outline:none;border-color:var(--accent);}
+  .date-row{display:flex;gap:8px;align-items:center;}
+  .date-input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-family:'Sarabun',sans-serif;font-size:13px;flex:1;}
+  .date-input:focus{outline:none;border-color:var(--accent);}
+  .date-sep{color:var(--text2);font-size:13px;}
+  .apply-btn{background:var(--accent);color:#0a0f1e;border:none;padding:8px 18px;border-radius:6px;font-family:'Sarabun',sans-serif;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;width:100%;transition:opacity 0.2s;}
+  .apply-btn:hover{opacity:0.85;}
 
-  /* FILTER */
-  #filterPanel { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 20px; display:none; }
-  .filter-title { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; font-weight:600; }
-  .filter-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .filter-group { display:flex; flex-direction:column; gap:4px; }
-  .filter-group.full { grid-column:span 2; }
-  .filter-label { font-size:11px; color:var(--text2); }
-  .filter-select { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:6px; font-family:'Sarabun',sans-serif; font-size:13px; width:100%; appearance:none; cursor:pointer; }
-  .filter-select:focus { outline:none; border-color:var(--accent); }
-  .date-row { display:flex; gap:8px; align-items:center; }
-  .date-input { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:6px; font-family:'Sarabun',sans-serif; font-size:13px; flex:1; }
-  .date-input:focus { outline:none; border-color:var(--accent); }
-  .date-sep { color:var(--text2); font-size:13px; }
-  .apply-btn { background:var(--accent); color:#0a0f1e; border:none; padding:8px 18px; border-radius:6px; font-family:'Sarabun',sans-serif; font-weight:700; font-size:13px; cursor:pointer; margin-top:10px; width:100%; transition:opacity 0.2s; }
-  .apply-btn:hover { opacity:0.85; }
-
-  /* DASHBOARD */
-  #dashPage { display:none; padding-bottom:40px; }
-  .kpi-section { padding:16px 20px 0; }
-  .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; position:relative; overflow:hidden; }
-  .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-  .kpi-card.total::before { background:var(--accent); }
-  .kpi-card.oos-card::before { background:var(--stockout); }
-  .kpi-card.stock-card::before { background:var(--stock); }
-  .kpi-card.stores-card::before { background:#a78bfa; }
-  .kpi-label { font-size:11px; color:var(--text2); margin-bottom:6px; }
-  .kpi-value { font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; line-height:1; }
-  .kpi-card.total .kpi-value { color:var(--accent); }
-  .kpi-card.oos-card .kpi-value { color:var(--stockout); }
-  .kpi-card.stock-card .kpi-value { color:var(--stock); }
-  .kpi-card.stores-card .kpi-value { color:#a78bfa; }
-  .kpi-sub { font-size:11px; color:var(--text2); margin-top:4px; }
-
-  .section { padding:16px 20px 0; }
-  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-  .section-title { font-size:14px; font-weight:600; }
-  .badge { font-size:11px; padding:3px 8px; border-radius:20px; font-family:'IBM Plex Mono',monospace; }
-  .badge-red { background:rgba(255,107,107,0.15); color:var(--stockout); }
-  .badge-yellow { background:rgba(255,209,102,0.15); color:var(--stock); }
-  .card-block { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
-
-  .chart-item { margin-bottom:10px; }
-  .chart-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
-  .chart-label { font-size:12px; color:var(--text); min-width:80px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .chart-bar-wrap { flex:1; background:var(--surface2); border-radius:4px; height:18px; overflow:hidden; }
-  .chart-bar { height:100%; border-radius:4px; transition:width 0.6s cubic-bezier(0.4,0,0.2,1); }
-  .chart-bar.red-bar { background:linear-gradient(90deg,#ff6b6b,#ff4040); }
-  .chart-bar.yellow-bar { background:linear-gradient(90deg,#ffd166,#ffb703); }
-  .chart-count { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text2); min-width:30px; text-align:right; }
-
-  .seg-kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
-  .seg-kpi { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
-  .seg-kpi-label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:1px; }
-  .seg-kpi-val { font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; }
-  .seg-kpi-val.peak { color:var(--peak); }
-  .seg-kpi-val.offpeak { color:var(--offpeak); }
-  .seg-kpi-val.weekday { color:var(--weekday); }
-  .seg-kpi-val.weekend { color:var(--weekend); }
-  .seg-chart { display:flex; flex-direction:column; gap:12px; }
-  .seg-row { display:flex; flex-direction:column; gap:4px; }
-  .seg-label-row { display:flex; justify-content:space-between; align-items:center; }
-  .seg-name { font-size:13px; font-weight:600; }
-  .seg-name.peak { color:var(--peak); }
-  .seg-name.offpeak { color:var(--offpeak); }
-  .seg-name.weekday { color:var(--weekday); }
-  .seg-name.weekend { color:var(--weekend); }
-  .seg-count { font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text2); }
-  .seg-bar-wrap { background:var(--surface2); border-radius:6px; height:22px; overflow:hidden; }
-  .seg-bar { height:100%; border-radius:6px; transition:width 0.7s cubic-bezier(0.4,0,0.2,1); }
-  .seg-bar.peak { background:linear-gradient(90deg,#f97316,#ea580c); }
-  .seg-bar.offpeak { background:linear-gradient(90deg,#60a5fa,#3b82f6); }
-  .seg-bar.weekday { background:linear-gradient(90deg,#a78bfa,#7c3aed); }
-  .seg-bar.weekend { background:linear-gradient(90deg,#34d399,#10b981); }
-  .seg-divider { border:none; border-top:1px solid var(--border); margin:12px 0; }
-
-  .table-wrap { overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; font-size:12px; }
-  thead tr { background:var(--surface2); }
-  th { padding:8px 10px; text-align:left; color:var(--text2); font-weight:600; font-size:11px; letter-spacing:0.5px; border-bottom:1px solid var(--border); white-space:nowrap; }
-  td { padding:8px 10px; border-bottom:1px solid var(--border); color:var(--text); }
-  tr:hover td { background:var(--surface2); }
-  .type-badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; }
-  .type-oos { background:rgba(255,107,107,0.15); color:var(--stockout); }
-  .type-stock { background:rgba(255,209,102,0.15); color:var(--stock); }
-  .seg-badge { display:inline-block; padding:2px 7px; border-radius:20px; font-size:10px; font-weight:600; }
-  .seg-peak { background:rgba(249,115,22,0.15); color:var(--peak); }
-  .seg-offpeak { background:rgba(96,165,250,0.15); color:var(--offpeak); }
-  .seg-weekday { background:rgba(167,139,250,0.15); color:var(--weekday); }
-  .seg-weekend { background:rgba(52,211,153,0.15); color:var(--weekend); }
-
-  .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; gap:16px; }
-  .spinner { width:40px; height:40px; border-radius:50%; border:3px solid var(--border); border-top-color:var(--accent); animation:spin 0.8s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  .loading-text { font-size:14px; color:var(--text2); }
-  .empty { text-align:center; padding:40px 20px; color:var(--text2); font-size:14px; }
-  .error-box { text-align:center; padding:40px 20px; }
-  .error-box p { color:var(--stockout); margin-bottom:16px; font-size:14px; }
-  .retry-btn { background:var(--accent); color:#0a0f1e; border:none; padding:10px 24px; border-radius:8px; font-family:'Sarabun',sans-serif; font-weight:700; font-size:14px; cursor:pointer; }
+  #dashPage{display:none;padding-bottom:40px;}
+  .kpi-section{padding:16px 20px 0;}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative;overflow:hidden;}
+  .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .kpi-card.total::before{background:var(--accent);}
+  .kpi-card.oos-card::before{background:var(--stockout);}
+  .kpi-card.stock-card::before{background:var(--stock);}
+  .kpi-card.stores-card::before{background:#a78bfa;}
+  .kpi-label{font-size:11px;color:var(--text2);margin-bottom:6px;}
+  .kpi-value{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;line-height:1;}
+  .kpi-card.total .kpi-value{color:var(--accent);}
+  .kpi-card.oos-card .kpi-value{color:var(--stockout);}
+  .kpi-card.stock-card .kpi-value{color:var(--stock);}
+  .kpi-card.stores-card .kpi-value{color:#a78bfa;}
+  .kpi-sub{font-size:11px;color:var(--text2);margin-top:4px;}
+  .section{padding:16px 20px 0;}
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .section-title{font-size:14px;font-weight:600;}
+  .badge{font-size:11px;padding:3px 8px;border-radius:20px;font-family:'IBM Plex Mono',monospace;}
+  .badge-red{background:rgba(255,107,107,0.15);color:var(--stockout);}
+  .badge-yellow{background:rgba(255,209,102,0.15);color:var(--stock);}
+  .card-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
+  .chart-item{margin-bottom:10px;}
+  .chart-row{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
+  .chart-label{font-size:12px;color:var(--text);min-width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .chart-bar-wrap{flex:1;background:var(--surface2);border-radius:4px;height:18px;overflow:hidden;}
+  .chart-bar{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+  .chart-bar.red-bar{background:linear-gradient(90deg,#ff6b6b,#ff4040);}
+  .chart-bar.yellow-bar{background:linear-gradient(90deg,#ffd166,#ffb703);}
+  .chart-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);min-width:30px;text-align:right;}
+  .seg-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .seg-kpi{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+  .seg-kpi-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
+  .seg-kpi-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;}
+  .seg-kpi-val.peak{color:var(--peak);} .seg-kpi-val.offpeak{color:var(--offpeak);}
+  .seg-kpi-val.weekday{color:var(--weekday);} .seg-kpi-val.weekend{color:var(--weekend);}
+  .seg-chart{display:flex;flex-direction:column;gap:12px;}
+  .seg-row{display:flex;flex-direction:column;gap:4px;}
+  .seg-label-row{display:flex;justify-content:space-between;align-items:center;}
+  .seg-name{font-size:13px;font-weight:600;}
+  .seg-name.peak{color:var(--peak);} .seg-name.offpeak{color:var(--offpeak);}
+  .seg-name.weekday{color:var(--weekday);} .seg-name.weekend{color:var(--weekend);}
+  .seg-count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text2);}
+  .seg-bar-wrap{background:var(--surface2);border-radius:6px;height:22px;overflow:hidden;}
+  .seg-bar{height:100%;border-radius:6px;transition:width 0.7s cubic-bezier(0.4,0,0.2,1);}
+  .seg-bar.peak{background:linear-gradient(90deg,#f97316,#ea580c);}
+  .seg-bar.offpeak{background:linear-gradient(90deg,#60a5fa,#3b82f6);}
+  .seg-bar.weekday{background:linear-gradient(90deg,#a78bfa,#7c3aed);}
+  .seg-bar.weekend{background:linear-gradient(90deg,#34d399,#10b981);}
+  .seg-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  thead tr{background:var(--surface2);}
+  th{padding:8px 10px;text-align:left;color:var(--text2);font-weight:600;font-size:11px;letter-spacing:0.5px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);}
+  tr:hover td{background:var(--surface2);}
+  .type-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .type-oos{background:rgba(255,107,107,0.15);color:var(--stockout);}
+  .type-stock{background:rgba(255,209,102,0.15);color:var(--stock);}
+  .seg-badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;}
+  .seg-peak{background:rgba(249,115,22,0.15);color:var(--peak);}
+  .seg-offpeak{background:rgba(96,165,250,0.15);color:var(--offpeak);}
+  .seg-weekday{background:rgba(167,139,250,0.15);color:var(--weekday);}
+  .seg-weekend{background:rgba(52,211,153,0.15);color:var(--weekend);}
+  .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;}
+  .spinner{width:40px;height:40px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading-text{font-size:14px;color:var(--text2);}
+  .empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:14px;}
+  .error-box{text-align:center;padding:40px 20px;}
+  .error-box p{color:var(--stockout);margin-bottom:16px;font-size:14px;}
+  .retry-btn{background:var(--accent);color:#0a0f1e;border:none;padding:10px 24px;border-radius:8px;font-family:'Sarabun',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -180,7 +153,7 @@
     </div>
     <div class="header-right">
       <button class="back-btn" id="backBtn" onclick="goHome()">← กลับ</button>
-      <button class="refresh-btn" id="refreshBtn" onclick="loadData()">↻ รีเฟรช</button>
+      <button class="refresh-btn" id="refreshBtn" onclick="reloadData()">↻ รีเฟรช</button>
     </div>
   </div>
   <div class="mode-badge" id="modeBadge">
@@ -253,20 +226,35 @@ let filtered = [];
 let currentMode = '';
 let dataLoaded = false;
 
-function getThaiDateStr(date) {
-  const offset = 7 * 60;
-  const thai = new Date(date.getTime() + (offset - date.getTimezoneOffset()) * 60000);
-  const y = thai.getFullYear();
-  const mo = String(thai.getMonth()+1).padStart(2,'0');
-  const d = String(thai.getDate()).padStart(2,'0');
-  return { y, mo, d, full: `${y}-${mo}-${d}` };
+// แปลง Google Date string "Date(2026,4,21,...)" → "2026-05-21"
+// month ใน Google Date เริ่มจาก 0 เหมือน JS
+function parseGoogleDate(val) {
+  if (!val) return '';
+  const s = val.toString();
+  const m = s.match(/Date\((\d+),(\d+),(\d+)/);
+  if (m) {
+    const y  = m[1];
+    const mo = String(parseInt(m[2]) + 1).padStart(2, '0'); // +1 เพราะ 0-based
+    const d  = String(m[3]).padStart(2, '0');
+    return `${y}-${mo}-${d}`;
+  }
+  return s.slice(0, 10);
+}
+
+// วันที่ปัจจุบัน timezone ไทย
+function todayThai() {
+  const now = new Date();
+  const thai = new Date(now.getTime() + (7 * 60 - now.getTimezoneOffset()) * 60000);
+  const y  = thai.getFullYear();
+  const mo = String(thai.getMonth() + 1).padStart(2, '0');
+  const d  = String(thai.getDate()).padStart(2, '0');
+  return { y, mo, d, str: `${y}-${mo}-${d}` };
 }
 
 function initDateRange() {
-  const now = new Date();
-  const { y, mo, full } = getThaiDateStr(now);
+  const { y, mo, str } = todayThai();
   document.getElementById('fDateFrom').value = `${y}-${mo}-01`;
-  document.getElementById('fDateTo').value = full;
+  document.getElementById('fDateTo').value = str;
 }
 
 function enterMode(mode) {
@@ -278,7 +266,6 @@ function enterMode(mode) {
   document.getElementById('refreshBtn').style.display = 'block';
   document.getElementById('lastUpdate').style.display = 'block';
   document.getElementById('modeBadge').style.display = 'flex';
-
   const chip = document.getElementById('modeChip');
   if (mode === 'oos') {
     chip.textContent = '🚫 Out of Stock';
@@ -289,12 +276,7 @@ function enterMode(mode) {
     chip.className = 'mode-chip stock';
     document.getElementById('logoSub').textContent = 'Stock OH Report';
   }
-
-  if (!dataLoaded) {
-    loadData();
-  } else {
-    applyFilter();
-  }
+  if (!dataLoaded) { loadData(); } else { applyFilter(); }
 }
 
 function goHome() {
@@ -309,10 +291,14 @@ function goHome() {
   currentMode = '';
 }
 
+function reloadData() {
+  dataLoaded = false;
+  loadData();
+}
+
 async function loadData() {
   document.getElementById('mainContent').innerHTML =
     `<div class="loading"><div class="spinner"></div><div class="loading-text">กำลังโหลดข้อมูล...</div></div>`;
-
   const url = API_URL + '&_=' + Date.now();
   try {
     const controller = new AbortController();
@@ -320,41 +306,37 @@ async function loadData() {
     const res = await fetch(url, { signal: controller.signal });
     clearTimeout(timeout);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-
     const text = await res.text();
     const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
     if (!match) throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-
     const json = JSON.parse(match[1]);
-    const cols = json.table.cols.map(c => c.label.trim()); // trim ช่องว่าง
-    allData = json.table.rows
-      .filter(r => r && r.c)
-      .map(r => {
-        const obj = {};
-        cols.forEach((c, i) => { obj[c] = r.c[i]?.v ?? ''; });
-        return obj;
-      });
-
+    const cols = json.table.cols.map(c => c.label.trim());
+    allData = json.table.rows.filter(r => r && r.c).map(r => {
+      const obj = {};
+      cols.forEach((c, i) => { obj[c] = r.c[i]?.v ?? ''; });
+      // แปลง timestamp เป็น string วันที่ไว้ใช้ filter
+      obj._dateStr = parseGoogleDate(obj.timestamp);
+      return obj;
+    });
     dataLoaded = true;
     populateFilters();
     applyFilter();
     document.getElementById('lastUpdate').textContent =
       'อัปเดตล่าสุด: ' + new Date().toLocaleString('th-TH');
-
   } catch(e) {
     const msg = e.name === 'AbortError' ? 'หมดเวลาเชื่อมต่อ กรุณาลองใหม่' : e.message;
     document.getElementById('mainContent').innerHTML = `
       <div class="error-box">
         <p>❌ โหลดข้อมูลไม่สำเร็จ<br><small style="color:var(--text2)">${msg}</small></p>
-        <button class="retry-btn" onclick="loadData()">ลองใหม่อีกครั้ง</button>
+        <button class="retry-btn" onclick="reloadData()">ลองใหม่อีกครั้ง</button>
       </div>`;
   }
 }
 
 function populateFilters() {
   const fields = {
-    fChannel:'Channel', fRegion:'Region', fArea:'Area',
-    fBU:'BU', fBrand:'Brand', fCategory:'Category',
+    fChannel:'Channel', fRegion:'Region', fArea:'Area', fBU:'BU',
+    fBrand:'Brand', fCategory:'Category',
     fWeekSegment:'Week_segment', fTimeSegment:'Time_Segment'
   };
   Object.entries(fields).forEach(([id, col]) => {
@@ -381,52 +363,37 @@ function applyFilter() {
 
   filtered = allData.filter(r => {
     const rt = (r.Report_Type || '').toLowerCase();
-    if (currentMode === 'oos' && !rt.includes('stockout')) return false;
-    if (currentMode === 'stock' && rt !== 'stock') return false;
-    if (ch && r.Channel !== ch) return false;
-    if (re && r.Region !== re) return false;
-    if (ar && r.Area !== ar) return false;
-    if (bu && r.BU !== bu) return false;
-    if (br && r.Brand !== br) return false;
-    if (ca && r.Category !== ca) return false;
+    if (currentMode === 'oos'   && !rt.includes('stockout')) return false;
+    if (currentMode === 'stock' && rt !== 'stock')           return false;
+    if (ch && r.Channel      !== ch) return false;
+    if (re && r.Region       !== re) return false;
+    if (ar && r.Area         !== ar) return false;
+    if (bu && r.BU           !== bu) return false;
+    if (br && r.Brand        !== br) return false;
+    if (ca && r.Category     !== ca) return false;
     if (ws && r.Week_segment !== ws) return false;
     if (ts && r.Time_Segment !== ts) return false;
-    if (df || dt) {
-      // แปลง timestamp จาก Google (Date object ms) เป็น yyyy-mm-dd
-      let stamp = '';
-      if (r.timestamp) {
-        const ms = typeof r.timestamp === 'number' ? r.timestamp : Date.parse(r.timestamp);
-        if (!isNaN(ms)) {
-          const d = new Date(ms);
-          const thai = new Date(d.getTime() + (7*60 - d.getTimezoneOffset()) * 60000);
-          stamp = thai.toISOString().slice(0,10);
-        } else {
-          stamp = r.timestamp.toString().slice(0,10);
-        }
-      }
-      if (df && stamp < df) return false;
-      if (dt && stamp > dt) return false;
-    }
+    // เปรียบเทียบวันที่ด้วย _dateStr ที่แปลงไว้แล้ว
+    if (df && r._dateStr < df) return false;
+    if (dt && r._dateStr > dt) return false;
     return true;
   });
-
   renderDashboard();
 }
 
 function renderDashboard() {
-  const total = filtered.length;
+  const total  = filtered.length;
   const stores = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
-  const isOOS = currentMode === 'oos';
-  const barClass = isOOS ? 'red-bar' : 'yellow-bar';
-  const badgeClass = isOOS ? 'badge-red' : 'badge-yellow';
-  const kpiColor = isOOS ? 'oos-card' : 'stock-card';
-  const label = isOOS ? 'Out of Stock' : 'Stock OH';
-
-  const byChannel = groupBy(filtered, 'Channel');
-  const byBrand   = groupBy(filtered, 'Brand');
-  const byRegion  = groupBy(filtered, 'Region');
-  const timeSeg   = calcSeg(filtered, 'Time_Segment');
-  const weekSeg   = calcSeg(filtered, 'Week_segment');
+  const isOOS  = currentMode === 'oos';
+  const barClass   = isOOS ? 'red-bar'    : 'yellow-bar';
+  const badgeClass = isOOS ? 'badge-red'  : 'badge-yellow';
+  const kpiColor   = isOOS ? 'oos-card'   : 'stock-card';
+  const label      = isOOS ? 'Out of Stock' : 'Stock OH';
+  const byChannel  = groupBy(filtered, 'Channel');
+  const byBrand    = groupBy(filtered, 'Brand');
+  const byRegion   = groupBy(filtered, 'Region');
+  const timeSeg    = calcSeg(filtered, 'Time_Segment');
+  const weekSeg    = calcSeg(filtered, 'Week_segment');
 
   document.getElementById('mainContent').innerHTML = `
   <div class="kpi-section">
@@ -448,7 +415,6 @@ function renderDashboard() {
       </div>
     </div>
   </div>
-
   <div class="section">
     <div class="section-header"><div class="section-title">⏱️ Peak vs OffPeak</div></div>
     <div class="card-block">
@@ -460,22 +426,18 @@ function renderDashboard() {
       <div class="seg-chart">${renderSegBars(weekSeg,total,['Weekday','Weekend'],['weekday','weekend'])}</div>
     </div>
   </div>
-
   <div class="section">
     <div class="section-header"><div class="section-title">📊 แยกตาม Channel</div></div>
-    <div class="card-block">${renderBarChart(byChannel, barClass)}</div>
+    <div class="card-block">${renderBarChart(byChannel,barClass)}</div>
   </div>
-
   <div class="section">
     <div class="section-header"><div class="section-title">🏷️ แยกตาม Brand</div></div>
-    <div class="card-block">${renderBarChart(byBrand, barClass)}</div>
+    <div class="card-block">${renderBarChart(byBrand,barClass)}</div>
   </div>
-
   <div class="section">
     <div class="section-header"><div class="section-title">📍 แยกตาม Region</div></div>
-    <div class="card-block">${renderBarChart(byRegion, barClass)}</div>
+    <div class="card-block">${renderBarChart(byRegion,barClass)}</div>
   </div>
-
   <div class="section">
     <div class="section-header">
       <div class="section-title">📋 รายการล่าสุด</div>
@@ -509,7 +471,7 @@ function renderSegBars(map, totalAll, labels, classes) {
   const max = Math.max(...labels.map(l => (map[l]||{total:0}).total), 1);
   return labels.map((label,i) => {
     const d = map[label] || { total:0 };
-    const pct = Math.round(d.total/max*100);
+    const pct  = Math.round(d.total/max*100);
     const tPct = totalAll ? Math.round(d.total/totalAll*100) : 0;
     return `<div class="seg-row">
       <div class="seg-label-row">
@@ -548,22 +510,15 @@ function renderBarChart(entries, barClass) {
 
 function renderTable(rows) {
   if (!rows.length) return '<div class="empty">ไม่มีข้อมูล</div>';
-  const headers = ['timestamp','store_name','Channel','Brand','product_en','Report_Type','OH','Time_Segment','Week_segment'];
+  const headers = ['วันที่','store_name','Channel','Brand','product_en','Report_Type','OH','Time_Segment','Week_segment'];
   return `<div class="table-wrap"><table>
     <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
     <tbody>${rows.map(r => {
       const rt = (r.Report_Type||'').toLowerCase();
       const ts = (r.Time_Segment||'').toLowerCase();
       const ws = (r.Week_segment||'').toLowerCase();
-      let tsStr = r.timestamp ? (() => {
-        const ms = typeof r.timestamp === 'number' ? r.timestamp : Date.parse(r.timestamp);
-        if (isNaN(ms)) return r.timestamp.toString().slice(0,16);
-        const d = new Date(ms);
-        const thai = new Date(d.getTime() + (7*60 - d.getTimezoneOffset())*60000);
-        return thai.toISOString().slice(0,16).replace('T',' ');
-      })() : '';
       return `<tr>
-        <td style="white-space:nowrap;font-size:11px;">${tsStr}</td>
+        <td style="white-space:nowrap;font-size:11px;">${r._dateStr}</td>
         <td>${r.store_name||''}</td>
         <td>${r.Channel||''}</td>
         <td>${r.Brand||''}</td>
@@ -577,7 +532,6 @@ function renderTable(rows) {
   </table></div>`;
 }
 
-// Init
 initDateRange();
 </script>
 </body>
