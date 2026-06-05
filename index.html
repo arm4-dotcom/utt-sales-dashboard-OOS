@@ -2,13 +2,13 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>UTT Sales Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg:#0a0f1e; --surface:#111827; --surface2:#1a2236; --border:#1e2d45;
-    --accent:#00d4aa; --stockout:#ff6b6b; --stock:#ffd166;
+    --accent:#00d4aa; --stockout:#ff6b6b; --stock:#ffd166; --bestseller:#f97316; --slowmover:#a78bfa;
     --text:#e8f0fe; --text2:#8899bb;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -24,16 +24,17 @@
   .back-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;display:none;}
   .refresh-btn{background:var(--surface2);border:1px solid var(--border);color:var(--accent);padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
   .refresh-btn:hover{background:var(--accent);color:#0a0f1e;}
-  .export-btn{background:#1d6f42;border:1px solid #2a9d5c;color:#fff;padding:8px 12px;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;display:none;}
-  .export-btn:hover{background:#2a9d5c;}
   .last-update{font-size:11px;color:var(--text2);margin-top:6px;display:none;}
   .mode-badge{display:none;align-items:center;gap:8px;margin-top:8px;}
   .mode-chip{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;}
   .mode-chip.oos{background:rgba(255,107,107,0.15);color:var(--stockout);}
   .mode-chip.stock{background:rgba(255,209,102,0.15);color:var(--stock);}
+  .mode-chip.bestseller{background:rgba(249,115,22,0.15);color:var(--bestseller);}
+  .mode-chip.slowmover{background:rgba(167,139,250,0.15);color:var(--slowmover);}
 
   #homePage{padding:30px 20px;}
-  .home-greeting{text-align:center;margin-bottom:32px;}
+  .home-greeting{text-align:center;margin-bottom:28px;}
+  .home-greeting h1{font-size:24px;font-weight:700;}
   .home-greeting h1{font-size:22px;font-weight:700;margin-bottom:6px;}
   .home-greeting p{font-size:14px;color:var(--text2);}
   .home-cards{display:flex;flex-direction:column;gap:16px;}
@@ -41,14 +42,21 @@
   .home-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
   .home-card.oos::before{background:var(--stockout);}
   .home-card.stock::before{background:var(--stock);}
+  .home-card.bestseller::before{background:var(--bestseller);}
+  .home-card.slowmover::before{background:var(--slowmover);}
   .home-card:hover{transform:translateY(-2px);border-color:var(--accent);}
+  .home-card:active{transform:scale(0.98);}
   .home-card-icon{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
   .home-card.oos .home-card-icon{background:rgba(255,107,107,0.12);}
   .home-card.stock .home-card-icon{background:rgba(255,209,102,0.12);}
+  .home-card.bestseller .home-card-icon{background:rgba(249,115,22,0.12);}
+  .home-card.slowmover .home-card-icon{background:rgba(167,139,250,0.12);}
   .home-card-info{flex:1;}
   .home-card-title{font-size:18px;font-weight:700;margin-bottom:4px;}
   .home-card.oos .home-card-title{color:var(--stockout);}
   .home-card.stock .home-card-title{color:var(--stock);}
+  .home-card.bestseller .home-card-title{color:var(--bestseller);}
+  .home-card.slowmover .home-card-title{color:var(--slowmover);}
   .home-card-desc{font-size:13px;color:var(--text2);line-height:1.5;}
   .home-card-arrow{font-size:22px;color:var(--text2);}
 
@@ -74,13 +82,8 @@
   .kpi-pill-val.green{color:var(--accent);}
   .kpi-pill-val.red{color:var(--stockout);}
   .kpi-pill-val.yellow{color:var(--stock);}
-  .kpi-pill-val.purple{color:#a78bfa;}
-
-  .export-banner{margin:0 20px 14px;padding:12px 16px;background:#1d6f42;border:1px solid #2a9d5c;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .export-banner-text{font-size:13px;color:#fff;line-height:1.4;}
-  .export-banner-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;}
-  .export-banner-btn{background:#fff;color:#1d6f42;border:none;padding:8px 18px;border-radius:7px;font-family:'Sarabun',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
-  .export-banner-btn:active{opacity:0.85;}
+  .kpi-pill-val.orange{color:var(--bestseller);}
+  .kpi-pill-val.purple{color:var(--slowmover);}
 
   .table-section{padding:0 20px;}
   .table-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -88,6 +91,8 @@
   .badge{font-size:11px;padding:3px 8px;border-radius:20px;font-family:'IBM Plex Mono',monospace;}
   .badge-red{background:rgba(255,107,107,0.15);color:var(--stockout);}
   .badge-yellow{background:rgba(255,209,102,0.15);color:var(--stock);}
+  .badge-orange{background:rgba(249,115,22,0.15);color:var(--bestseller);}
+  .badge-purple{background:rgba(167,139,250,0.15);color:var(--slowmover);}
   .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
   table{width:100%;border-collapse:collapse;font-size:12px;}
   thead tr{background:var(--surface2);}
@@ -130,7 +135,6 @@
     <div class="header-right">
       <button class="back-btn"    id="backBtn"    onclick="goHome()">← กลับ</button>
       <button class="refresh-btn" id="refreshBtn" onclick="reloadData()">↻ รีเฟรช</button>
-      <button class="export-btn"  id="exportBtn"  onclick="exportCSV()">⬇ CSV</button>
     </div>
   </div>
   <div class="mode-badge" id="modeBadge">
@@ -141,23 +145,38 @@
 
 <div id="homePage">
   <div class="home-greeting">
-    <h1>สวัสดีครับ 👋</h1>
-    <p>เลือกข้อมูลที่ต้องการดู</p>
+    <h1>โปรดเลือกเมนู</h1>
   </div>
   <div class="home-cards">
-    <div class="home-card oos" onclick="enterMode('oos')">
-      <div class="home-card-icon">🚫</div>
-      <div class="home-card-info">
-        <div class="home-card-title">Out of Stock</div>
-        <div class="home-card-desc">สินค้าหมดสต็อก / ขาดสินค้าในร้าน</div>
-      </div>
-      <div class="home-card-arrow">›</div>
-    </div>
     <div class="home-card stock" onclick="enterMode('stock')">
       <div class="home-card-icon">📦</div>
       <div class="home-card-info">
-        <div class="home-card-title">Stock OH</div>
-        <div class="home-card-desc">สินค้าเหลือน้อย / ใกล้หมด</div>
+        <div class="home-card-title">เช็คสต็อกสินค้า</div>
+        <div class="home-card-desc">ตรวจสอบสต็อกสินค้าหน้าร้าน / รายงานยอดคงเหลือ</div>
+      </div>
+      <div class="home-card-arrow">›</div>
+    </div>
+    <div class="home-card oos" onclick="enterMode('oos')">
+      <div class="home-card-icon">🚫</div>
+      <div class="home-card-info">
+        <div class="home-card-title">สินค้าขาด</div>
+        <div class="home-card-desc">ติดตามสินค้าขาดหน้าร้าน อายุ OOS และเหตุผล</div>
+      </div>
+      <div class="home-card-arrow">›</div>
+    </div>
+    <div class="home-card bestseller" onclick="enterMode('bestseller')">
+      <div class="home-card-icon">🔥</div>
+      <div class="home-card-info">
+        <div class="home-card-title">สินค้าขายดี</div>
+        <div class="home-card-desc">สินค้าที่ขายดีในแต่ละสาขา พร้อมเหตุผล</div>
+      </div>
+      <div class="home-card-arrow">›</div>
+    </div>
+    <div class="home-card slowmover" onclick="enterMode('slowmover')">
+      <div class="home-card-icon">🐢</div>
+      <div class="home-card-info">
+        <div class="home-card-title">สินค้าขายช้า</div>
+        <div class="home-card-desc">สินค้าที่ขายช้า ระบุสาเหตุและสาขา</div>
       </div>
       <div class="home-card-arrow">›</div>
     </div>
@@ -203,14 +222,13 @@ let allData     = [];
 let filtered    = [];
 let currentMode = '';
 let dataLoaded  = false;
+let deepLinked  = false;   // ← เปิดตรงจาก Rich Menu หรือไม่
 
 function parseGoogleDate(val) {
   if (!val) return '';
   const s = val.toString();
   const m = s.match(/Date\((\d+),(\d+),(\d+)/);
-  if (m) {
-    return `${m[1]}-${String(parseInt(m[2])+1).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
-  }
+  if (m) return `${m[1]}-${String(parseInt(m[2])+1).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
   return s.slice(0,10);
 }
 
@@ -229,30 +247,57 @@ function initDateRange() {
   document.getElementById('fDateTo').value   = str;
 }
 
+// ── Deep link: รองรับ ?mode=oos หรือ ?mode=stock จาก Rich Menu ──
+function getDeepLinkMode() {
+  try {
+    // LIFF จะส่ง query param ผ่าน URL
+    const params = new URLSearchParams(window.location.search);
+    const mode = (params.get('mode') || '').toLowerCase();
+    if (['oos','stock','bestseller','slowmover'].includes(mode)) return mode;
+
+    // กรณี LIFF ส่งผ่าน hash (บาง LIFF version)
+    const hash = window.location.hash;
+    if (hash) {
+      const hashParams = new URLSearchParams(hash.replace('#',''));
+      const hMode = (hashParams.get('mode') || '').toLowerCase();
+      if (['oos','stock','bestseller','slowmover'].includes(hMode)) return hMode;
+    }
+  } catch(e) { /* ignore */ }
+  return '';
+}
+
 function showDashUI(show) {
   const s = show ? 'block' : 'none';
-  ['backBtn','refreshBtn','exportBtn','lastUpdate'].forEach(id => {
-    document.getElementById(id).style.display = s;
-  });
-  document.getElementById('modeBadge').style.display  = show ? 'flex'  : 'none';
+  document.getElementById('refreshBtn').style.display  = s;
+  document.getElementById('lastUpdate').style.display  = s;
+  document.getElementById('modeBadge').style.display   = show ? 'flex' : 'none';
   document.getElementById('filterPanel').style.display = s;
   document.getElementById('dashPage').style.display    = s;
-  document.getElementById('homePage').style.display    = show ? 'none' : 'block';
+
+  // ถ้า deep link มา ไม่ต้องแสดงปุ่มกลับ + ซ่อน home
+  if (deepLinked) {
+    document.getElementById('backBtn').style.display  = 'none';
+    document.getElementById('homePage').style.display = 'none';
+  } else {
+    document.getElementById('backBtn').style.display  = show ? 'block' : 'none';
+    document.getElementById('homePage').style.display = show ? 'none'  : 'block';
+  }
 }
 
 function enterMode(mode) {
   currentMode = mode;
   showDashUI(true);
   const chip = document.getElementById('modeChip');
-  if (mode === 'oos') {
-    chip.textContent = '🚫 Out of Stock';
-    chip.className   = 'mode-chip oos';
-    document.getElementById('logoSub').textContent = 'Out of Stock Report';
-  } else {
-    chip.textContent = '📦 Stock OH';
-    chip.className   = 'mode-chip stock';
-    document.getElementById('logoSub').textContent = 'Stock OH Report';
-  }
+  const modeMap = {
+    oos:        { text:'🚫 สินค้าขาด',       cls:'oos',        sub:'Out of Stock Report' },
+    stock:      { text:'📦 เช็คสต็อกสินค้า', cls:'stock',      sub:'Stock Check Report' },
+    bestseller: { text:'🔥 สินค้าขายดี',     cls:'bestseller', sub:'Bestseller Report' },
+    slowmover:  { text:'🐢 สินค้าขายช้า',    cls:'slowmover',  sub:'Slow Mover Report' },
+  };
+  const m = modeMap[mode] || modeMap.oos;
+  chip.textContent = m.text;
+  chip.className   = 'mode-chip ' + m.cls;
+  document.getElementById('logoSub').textContent = m.sub;
   if (!dataLoaded) { loadData(); } else { applyFilter(); }
 }
 
@@ -330,8 +375,10 @@ function applyFilter() {
 
   filtered = allData.filter(r => {
     const rt = (r.Report_Type||'').toLowerCase();
-    if (currentMode === 'oos'   && !rt.includes('stockout')) return false;
-    if (currentMode === 'stock' && rt !== 'stock')           return false;
+    if (currentMode === 'oos'        && !['stockout','oos'].includes(rt))                  return false;
+    if (currentMode === 'stock'      && !['oh','onhand','stock','stockcheck'].includes(rt)) return false;
+    if (currentMode === 'bestseller' && !['bestseller','fastmover'].includes(rt))           return false;
+    if (currentMode === 'slowmover'  && !['slowmove','slowmover','slow'].includes(rt))      return false;
     if (ch && r.Channel      !== ch) return false;
     if (cu && r.Customer     !== cu) return false;
     if (re && r.Region       !== re) return false;
@@ -348,71 +395,20 @@ function applyFilter() {
   renderDashboard();
 }
 
-// ========== EXPORT CSV ==========
-function exportCSV() {
-  if (!filtered.length) { alert('ไม่มีข้อมูลที่จะ Export'); return; }
-
-  const headers = [
-    'วันที่','Channel','Customer','store_id','store_name',
-    'Region','Area','BU','Category','Brand',
-    'Barcode','product_en','product_th',
-    'Report_Type','OH','Reason','Time_Segment','Week_segment'
-  ];
-
-  const esc = v => {
-    const s = String(v ?? '');
-    return (s.includes(',') || s.includes('"') || s.includes('\n'))
-      ? `"${s.replace(/"/g,'""')}"` : s;
-  };
-
-  const rows = filtered.map(r => [
-    r._dateStr,
-    r.Channel      || '',
-    r.Customer     || '',
-    r.store_id     ? String(Math.round(Number(r.store_id))) : '',
-    r.store_name   || '',
-    r.Region       || '',
-    r.Area         || '',
-    r.BU           || '',
-    r.Category     || '',
-    r.Brand        || '',
-    r.barcode      ? String(Math.round(Number(r.barcode))) : '',
-    r.product_en   || '',
-    r.product_th   || '',
-    r.Report_Type  || '',
-    r.OH !== ''    ? r.OH : '',
-    r.Reason       || '',
-    r.Time_Segment || '',
-    r.Week_segment || ''
-  ].map(esc).join(','));
-
-  // BOM สำหรับ Excel อ่านภาษาไทยได้
-  const csv  = '\uFEFF' + [headers.join(','), ...rows].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  const { y, mo, d } = todayThai();
-  const mode = currentMode === 'oos' ? 'OOS' : 'StockOH';
-  a.href     = url;
-  a.download = `UTT_${mode}_${y}${mo}${d}.csv`;
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 1000);
-}
-
 // ========== RENDER ==========
 function renderDashboard() {
   const total  = filtered.length;
   const stores = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
-  const isOOS  = currentMode === 'oos';
-  const badgeClass = isOOS ? 'badge-red'   : 'badge-yellow';
-  const pillVal    = isOOS ? 'red'         : 'yellow';
-  const label      = isOOS ? 'Out of Stock': 'Stock OH';
-  const mode       = currentMode === 'oos' ? 'OOS' : 'StockOH';
+  const modeMeta = {
+    oos:        { badge:'badge-red',    pill:'red',    label:'สินค้าขาด' },
+    stock:      { badge:'badge-yellow', pill:'yellow', label:'เช็คสต็อก' },
+    bestseller: { badge:'badge-orange', pill:'orange', label:'สินค้าขายดี' },
+    slowmover:  { badge:'badge-purple', pill:'purple', label:'สินค้าขายช้า' },
+  };
+  const meta = modeMeta[currentMode] || modeMeta.oos;
+  const badgeClass = meta.badge;
+  const pillVal    = meta.pill;
+  const label      = meta.label;
 
   document.getElementById('mainContent').innerHTML = `
   <div class="kpi-strip">
@@ -428,14 +424,6 @@ function renderDashboard() {
       <div class="kpi-pill-label">${label}</div>
       <div class="kpi-pill-val ${pillVal}">${total.toLocaleString()}</div>
     </div>
-  </div>
-
-  <div class="export-banner">
-    <div>
-      <div class="export-banner-text">⬇ Export ${total.toLocaleString()} รายการ</div>
-      <div class="export-banner-sub">ไฟล์ CSV — เปิดได้ใน Excel / Google Sheets</div>
-    </div>
-    <button class="export-banner-btn" onclick="exportCSV()">Download</button>
   </div>
 
   <div class="table-section">
@@ -479,7 +467,15 @@ function renderTable(rows) {
   </table>`;
 }
 
+// ── Init ──
 initDateRange();
+
+// ตรวจ deep link จาก Rich Menu
+const dlMode = getDeepLinkMode();
+if (dlMode) {
+  deepLinked = true;
+  enterMode(dlMode);
+}
 </script>
 </body>
 </html>
