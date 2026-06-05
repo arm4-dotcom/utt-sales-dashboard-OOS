@@ -151,7 +151,7 @@
     <div class="home-card stock" onclick="enterMode('stock')">
       <div class="home-card-icon">📦</div>
       <div class="home-card-info">
-        <div class="home-card-title">เช็คสต็อกสินค้า</div>
+        <div class="home-card-title">ตรวจสอบสต็อกสินค้า</div>
         <div class="home-card-desc">ตรวจสอบสต็อกสินค้าหน้าร้าน / รายงานยอดคงเหลือ</div>
       </div>
       <div class="home-card-arrow">›</div>
@@ -159,7 +159,7 @@
     <div class="home-card oos" onclick="enterMode('oos')">
       <div class="home-card-icon">🚫</div>
       <div class="home-card-info">
-        <div class="home-card-title">สินค้าขาด</div>
+        <div class="home-card-title">ตรวจสอบสินค้าขาด</div>
         <div class="home-card-desc">ติดตามสินค้าขาดหน้าร้าน อายุ OOS และเหตุผล</div>
       </div>
       <div class="home-card-arrow">›</div>
@@ -167,7 +167,7 @@
     <div class="home-card bestseller" onclick="enterMode('bestseller')">
       <div class="home-card-icon">🔥</div>
       <div class="home-card-info">
-        <div class="home-card-title">สินค้าขายดี</div>
+        <div class="home-card-title">ข้อมูลสินค้าขายดี</div>
         <div class="home-card-desc">สินค้าที่ขายดีในแต่ละสาขา พร้อมเหตุผล</div>
       </div>
       <div class="home-card-arrow">›</div>
@@ -175,7 +175,7 @@
     <div class="home-card slowmover" onclick="enterMode('slowmover')">
       <div class="home-card-icon">🐢</div>
       <div class="home-card-info">
-        <div class="home-card-title">สินค้าขายช้า</div>
+        <div class="home-card-title">ข้อมูลสินค้าขายช้า</div>
         <div class="home-card-desc">สินค้าที่ขายช้า ระบุสาเหตุและสาขา</div>
       </div>
       <div class="home-card-arrow">›</div>
@@ -289,10 +289,10 @@ function enterMode(mode) {
   showDashUI(true);
   const chip = document.getElementById('modeChip');
   const modeMap = {
-    oos:        { text:'🚫 สินค้าขาด',       cls:'oos',        sub:'Out of Stock Report' },
-    stock:      { text:'📦 เช็คสต็อกสินค้า', cls:'stock',      sub:'Stock Check Report' },
-    bestseller: { text:'🔥 สินค้าขายดี',     cls:'bestseller', sub:'Bestseller Report' },
-    slowmover:  { text:'🐢 สินค้าขายช้า',    cls:'slowmover',  sub:'Slow Mover Report' },
+    oos:        { text:'🚫 ตรวจสอบสินค้าขาด',   cls:'oos',        sub:'Out of Stock Report' },
+    stock:      { text:'📦 ตรวจสอบสต็อกสินค้า', cls:'stock',      sub:'Stock Check Report' },
+    bestseller: { text:'🔥 ข้อมูลสินค้าขายดี',  cls:'bestseller', sub:'Bestseller Report' },
+    slowmover:  { text:'🐢 ข้อมูลสินค้าขายช้า', cls:'slowmover',  sub:'Slow Mover Report' },
   };
   const m = modeMap[mode] || modeMap.oos;
   chip.textContent = m.text;
@@ -400,10 +400,10 @@ function renderDashboard() {
   const total  = filtered.length;
   const stores = new Set(filtered.map(r => r.store_id).filter(Boolean)).size;
   const modeMeta = {
-    oos:        { badge:'badge-red',    pill:'red',    label:'สินค้าขาด' },
-    stock:      { badge:'badge-yellow', pill:'yellow', label:'เช็คสต็อก' },
-    bestseller: { badge:'badge-orange', pill:'orange', label:'สินค้าขายดี' },
-    slowmover:  { badge:'badge-purple', pill:'purple', label:'สินค้าขายช้า' },
+    oos:        { badge:'badge-red',    pill:'red',    label:'ตรวจสอบสินค้าขาด' },
+    stock:      { badge:'badge-yellow', pill:'yellow', label:'ตรวจสอบสต็อกสินค้า' },
+    bestseller: { badge:'badge-orange', pill:'orange', label:'ข้อมูลสินค้าขายดี' },
+    slowmover:  { badge:'badge-purple', pill:'purple', label:'ข้อมูลสินค้าขายช้า' },
   };
   const meta = modeMeta[currentMode] || modeMeta.oos;
   const badgeClass = meta.badge;
